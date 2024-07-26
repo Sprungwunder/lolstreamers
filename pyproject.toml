@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "lolstreamers"
+version = "0.1.0"
+description = ""
+authors = ["Christian Scholz <c.scholz@c-s-media.net>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^5.0.7"
+elasticsearch = "^8.14.0"
+elasticsearch-dsl = "^8.14.0"
+django-elasticsearch-dsl = "^8.0"
+djangorestframework = "^3.15.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
