@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'drf_yasg',
+    'elasticsearch_dsl',
+    'django_elasticsearch_dsl',
     'lolstreamsearch.apps.LolstreamsearchConfig',
 ]
 
@@ -117,6 +120,17 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+
+# ELASTIC SETTINGS
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': [os.getenv("ELASTIC_HOST")],  # URL deines Elasticsearch-Servers
+        'api_key': (os.getenv("ELASTIC_API_KEY_ID"), os.getenv("ELASTIC_API_KEY")),
+        'verify_certs': False,
+        'ssl_show_warn': not DEBUG
+    },
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
