@@ -111,14 +111,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         # Für Admin-Benutzer, die sich im Admin-Panel anmelden
-        'rest_framework.authentication.BasicAuthentication',
-        # Falls du Basic Authentication verwendest
-        'rest_framework.authentication.TokenAuthentication',
-        # Falls du Token-basierte Authentifizierung verwendest
-    ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
+    ]
 }
 
 # ELASTIC SETTINGS

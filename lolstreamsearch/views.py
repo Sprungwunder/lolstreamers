@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework import permissions
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.response import Response
@@ -15,7 +16,7 @@ def index(request):
 
 
 class YtVideoView(APIView):
-    @permission_classes([AllowAny])
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get(self, request):
         videos = YtVideoElasticAPI.get_all_videos(request.query_params.get('q', ''))
 
@@ -31,6 +32,5 @@ class YtVideoView(APIView):
         # Die Video-Liste als JSON-Response zurückgeben
         return Response(video_list)
 
-    @permission_classes([IsAdminUser])
     def post(self, request):
         return Response({"message": "Hello Admin"})
