@@ -1,11 +1,10 @@
 from django.shortcuts import render
-from rest_framework import permissions
+from rest_framework import permissions, viewsets
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from lolstreamsearch.elasticsearch_api import YtVideoElasticAPI
 from lolstreamsearch.models import YtStream
-from lolstreamsearch.yt_es_documents import YtVideoDocument
+from lolstreamsearch.yt_es_documents import YtVideoDocument, YtVideoDocumentSerializer
 
 
 def index(request):
@@ -14,13 +13,7 @@ def index(request):
     return render(request, "lolstreamsearch/index.html", context)
 
 
-class YtVideoView(APIView):
+class YtVideoListViewSet(viewsets.ModelViewSet):
+    queryset = YtVideoDocument.get_queryset()
+    serializer_class = YtVideoDocumentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    def get(self, request):
-        videos = YtVideoElasticAPI.get_all_videos(request.query_params.get('q', ''))
-        video_list = [hit.serialize() for hit in videos]
-        return Response(video_list)
-
-    def post(self, request):
-        return Response({"message": "Hello Admin"})

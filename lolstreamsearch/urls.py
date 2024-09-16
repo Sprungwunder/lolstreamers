@@ -1,9 +1,14 @@
 from django.urls import path
+from rest_framework.routers import DefaultRouter
 
 from . import views
-from .views import YtVideoView
+from .views import YtVideoListViewSet
 
-urlpatterns = [
+
+router = DefaultRouter()
+router.register(r'ytvideos', YtVideoListViewSet, basename='yt_video')
+
+urlpatterns = router.urls
+urlpatterns = urlpatterns + [
     path("", views.index, name="index"),
-    path("api/yt-video/", YtVideoView.as_view(), name="yt_video"),
 ]
