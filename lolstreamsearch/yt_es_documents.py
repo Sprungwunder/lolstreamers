@@ -1,13 +1,12 @@
 """
 Youtube Elasticsearch Documents Model
 """
-from typing import List
-
 from elasticsearch_dsl import Text, Date, Keyword, Document
 from rest_framework import serializers
 
 
 class YtVideoDocument(Document):
+    id = Keyword()
     title = Text()
     description = Text()
     video_url = Text()
@@ -16,7 +15,7 @@ class YtVideoDocument(Document):
     opponent_champion = Keyword()
     lane = Keyword()
     runes = Text(multi=True)
-    items = Text(multi=True)
+    champion_items = Text(multi=True)
     lol_version = Keyword()
 
     class Index:
@@ -28,6 +27,7 @@ class YtVideoDocument(Document):
 
     def serialize(self):
         return {
+            'id': self.meta.id,
             'title': self.title,
             'description': self.description,
             'video_url': self.video_url,
@@ -36,7 +36,7 @@ class YtVideoDocument(Document):
             'opponent_champion': self.opponent_champion,
             'lane': self.lane,
             'runes': self.runes,
-            'items': self.items,
+            'champion_items': self.champion_items,
             'lol_version': self.lol_version,
         }
 
@@ -48,6 +48,7 @@ class YtVideoDocument(Document):
 
 
 class YtVideoDocumentSerializer(serializers.Serializer):
+    id = serializers.CharField(required=False)
     title = serializers.CharField()
     description = serializers.CharField()
     video_url = serializers.CharField()
@@ -56,13 +57,20 @@ class YtVideoDocumentSerializer(serializers.Serializer):
     opponent_champion = serializers.CharField()
     lane = serializers.CharField()
     runes = serializers.ListSerializer(child=serializers.CharField())
-    items = serializers.ListSerializer(child=serializers.CharField())
+    champion_items = serializers.ListSerializer(child=serializers.CharField())
     lol_version = serializers.CharField()
 
-    def validate(self, data):
-        return data
+    def to_representation(self, instance):
+        repr = super().to_representation(instance)
+        elastic_id = instance.meta.id
+        repr['id'] = elastic_id
+        return repr
 
     def create(self, validated_data):
+        del validated_data['id']
         ytvideo = YtVideoDocument(**validated_data)
-        if ytvideo.save() == "created":
-            return ytvideo
+        result = ytvideo.save(return_doc_meta=True)
+        meta_id = result.body.get("_id")
+        ytvideo.meta.id = meta_id
+        ytvideo.id = meta_id
+        return ytvideo
