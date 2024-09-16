@@ -1,12 +1,11 @@
 from django.shortcuts import render
 from rest_framework import permissions
-from rest_framework.decorators import permission_classes
-from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from lolstreamsearch.elasticsearch_api import YtVideoElasticAPI
 from lolstreamsearch.models import YtStream
+from lolstreamsearch.yt_es_documents import YtVideoDocument
 
 
 def index(request):
@@ -17,19 +16,10 @@ def index(request):
 
 class YtVideoView(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
     def get(self, request):
         videos = YtVideoElasticAPI.get_all_videos(request.query_params.get('q', ''))
-
-        # Die Daten für die Response aufbereiten
-        video_list = [{
-            'id': hit.meta.id,
-            'title': hit.title,
-            'description': hit.description,
-            'champion': hit.champion,
-            'version': hit.lol_version
-        } for hit in videos]
-
-        # Die Video-Liste als JSON-Response zurückgeben
+        video_list = [hit.serialize() for hit in videos]
         return Response(video_list)
 
     def post(self, request):

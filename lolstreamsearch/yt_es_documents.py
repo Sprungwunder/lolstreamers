@@ -23,17 +23,16 @@ class YtVideoDocument(Document):
             'auto_expand_replicas': '0-1'
         }
 
-    def prepare(self, instance):
-        # Bereitet das Dokument zur Indizierung vor
+    def serialize(self):
         return {
-            'title': instance.title,
-            'description': instance.description,
-            'video_url': instance.video_url,
-            'published_at': instance.published_at,
-            'champion': instance.champion,
-            'opponent_champion': instance.opponent_champion,
-            'lane': instance.lane,
-            'runes': instance.runes,
-            'items': instance.items,
-            'lol_version': instance.lol_version,
+            'title': self.title,
+            'description': self.description,
+            'video_url': self.video_url,
+            'published_at': self.published_at,
+            'champion': self.champion,
+            'opponent_champion': self.opponent_champion,
+            'lane': self.lane,
+            'runes': [ x for x in self.runes ],
+            'items': [ x for x in self.items ],
+            'lol_version': self.lol_version,
         }
