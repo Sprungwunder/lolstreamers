@@ -61,10 +61,10 @@ class YtVideoDocumentSerializer(serializers.Serializer):
     lol_version = serializers.CharField()
 
     def to_representation(self, instance):
-        repr = super().to_representation(instance)
-        elastic_id = instance.meta.id
-        repr['id'] = elastic_id
-        return repr
+        representation = super().to_representation(instance)
+        if isinstance(instance, YtVideoDocument):
+            representation['id'] = instance.meta.id
+        return representation
 
     def create(self, validated_data):
         del validated_data['id']

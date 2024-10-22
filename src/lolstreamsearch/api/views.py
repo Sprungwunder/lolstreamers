@@ -1,19 +1,18 @@
 from django.http import Http404
 from django.shortcuts import render
 from elasticsearch import NotFoundError
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, mixins
+from rest_framework.viewsets import GenericViewSet
 
-from lolstreamsearch.models import YtStream
-from lolstreamsearch.yt_es_documents import YtVideoDocument, YtVideoDocumentSerializer
-
-
-def index(request):
-    latest_stream_list = YtStream.objects.order_by("-streamer_name")[:5]
-    context = {"latest_stream_list": latest_stream_list, }
-    return render(request, "lolstreamsearch/index.html", context)
+from .yt_es_documents import YtVideoDocument, YtVideoDocumentSerializer
 
 
-class YtVideoListViewSet(viewsets.ModelViewSet):
+
+class YtVideoListViewSet(mixins.CreateModelMixin,
+                         mixins.RetrieveModelMixin,
+                         mixins.DestroyModelMixin,
+                         mixins.ListModelMixin,
+                         GenericViewSet):
     serializer_class = YtVideoDocumentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
