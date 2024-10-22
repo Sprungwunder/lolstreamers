@@ -1,11 +1,9 @@
 from django.http import Http404
-from django.shortcuts import render
 from elasticsearch import NotFoundError
-from rest_framework import permissions, viewsets, mixins
+from rest_framework import permissions, mixins
 from rest_framework.viewsets import GenericViewSet
 
 from .yt_es_documents import YtVideoDocument, YtVideoDocumentSerializer
-
 
 
 class YtVideoListViewSet(mixins.CreateModelMixin,
