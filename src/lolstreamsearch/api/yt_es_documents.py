@@ -13,10 +13,13 @@ class YtVideoDocument(Document):
     published_at = Date()
     champion = Keyword()
     opponent_champion = Keyword()
+    team_champion = Keyword()
+    opponent_team_champion = Keyword(multi=True)
     lane = Keyword()
-    runes = Text(multi=True)
-    champion_items = Text(multi=True)
+    runes = Keyword(multi=True)
+    champion_items = Keyword(multi=True)
     lol_version = Keyword()
+    streamer = Keyword()
 
     class Index:
         name = 'lolstreamsearch_yt_videos'
@@ -34,10 +37,13 @@ class YtVideoDocument(Document):
             'published_at': self.published_at,
             'champion': self.champion,
             'opponent_champion': self.opponent_champion,
+            'team_champions': self.team_champions,
+            'opponent_team_champions': self.opponent_team_champions,
             'lane': self.lane,
             'runes': self.runes,
             'champion_items': self.champion_items,
             'lol_version': self.lol_version,
+            'streamer': self.streamer
         }
 
     @staticmethod
@@ -55,10 +61,13 @@ class YtVideoDocumentSerializer(serializers.Serializer):
     published_at = serializers.DateTimeField()
     champion = serializers.CharField()
     opponent_champion = serializers.CharField()
+    team_champions = serializers.ListField(child=serializers.CharField())
+    opponent_team_champions = serializers.ListSerializer(child=serializers.CharField())
     lane = serializers.CharField()
     runes = serializers.ListSerializer(child=serializers.CharField())
     champion_items = serializers.ListSerializer(child=serializers.CharField())
     lol_version = serializers.CharField()
+    streamer = serializers.CharField()
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
