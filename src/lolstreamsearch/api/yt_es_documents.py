@@ -1,5 +1,30 @@
 """
 Youtube Elasticsearch Documents Model
+
+
+POST:
+
+{
+  "video_url": "https://www.youtube.com/watch?v=PDuIp8Y9aIY",
+  "champion": "Volibear",
+  "opponent_champion": "Yone",
+  "lane": "top",
+  "lol_version": "14",
+  "team_champions": [
+    "Zac", "Neeko", "Ezreal", "Poppy"
+  ],
+  "opponent_team_champions": [
+    "Skarner", "Aurora", "Ashe", "Brand"
+  ],
+  "runes": [
+    "Press the Attack"
+  ],
+  "champion_items": [
+    "Nashors Tooth"
+  ]
+}
+
+
 """
 from elasticsearch_dsl import Text, Date, Keyword, Document
 from rest_framework import serializers
@@ -9,6 +34,7 @@ from google_api import get_yt_video_information
 
 class YtVideoDocument(Document):
     id = Keyword()
+    ytid = Text()
     title = Text()
     description = Text()
     video_url = Text()
@@ -33,6 +59,7 @@ class YtVideoDocument(Document):
     def serialize(self):
         return {
             'id': self.meta.id,
+            'ytid': self.ytid,
             'title': self.title,
             'description': self.description,
             'video_url': self.video_url,
@@ -57,6 +84,7 @@ class YtVideoDocument(Document):
 
 class YtVideoDocumentSerializer(serializers.Serializer):
     id = serializers.CharField(required=False)
+    ytid = serializers.CharField(required=False)
     title = serializers.CharField(required=False)
     description = serializers.CharField(required=False)
     video_url = serializers.CharField()
@@ -81,7 +109,8 @@ class YtVideoDocumentSerializer(serializers.Serializer):
         if isinstance(instance, YtVideoDocument):
             representation['id'] = instance.meta.id
 
-        yt_info = get_yt_video_information(self.get_yt_id(instance))
+        representation['ytid'] = self.get_yt_id(instance)
+        yt_info = get_yt_video_information(representation['ytid'])
         representation['views'] = yt_info.views
         representation['likes'] = yt_info.likes
         return representation
@@ -89,7 +118,9 @@ class YtVideoDocumentSerializer(serializers.Serializer):
     def create(self, validated_data):
         if 'id' in validated_data:
             del validated_data['id']
-        yt_video_info = get_yt_video_information(self.get_yt_id(validated_data))
+        ytid = self.get_yt_id(validated_data)
+        yt_video_info = get_yt_video_information(ytid)
+        validated_data['ytid'] = ytid
         validated_data['title'] = yt_video_info.title
         validated_data['description'] = yt_video_info.description
         validated_data['published_at'] = yt_video_info.published_at
