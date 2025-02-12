@@ -15,7 +15,7 @@ class YtVideoListViewSet(mixins.CreateModelMixin,
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        return YtVideoDocument.get_queryset()
+        return YtVideoDocument.get_queryset(self.request.query_params)
 
     def get_object(self):
         try:

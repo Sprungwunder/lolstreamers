@@ -75,9 +75,17 @@ class YtVideoDocument(Document):
             'streamer': self.streamer
         }
 
+    # simple example request
+    # ...ytvideos/?champion=Volibear&lane=&opponent_champion=&runes=Press%20the%20Attack&team_champions=Neeko%2CEzreal%2CPoppy%2CVayne
     @staticmethod
-    def get_queryset():
+    def get_queryset(query_params):
         videos = YtVideoDocument.search()
+        for key, values in query_params.items():
+            if values == "":
+                continue
+            for value in values.split(","):
+                videos = videos.filter("term", **{key: value})
+        print(videos.to_dict())
         video_list = [hit.serialize() for hit in videos]
         return video_list
 
