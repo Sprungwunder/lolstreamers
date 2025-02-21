@@ -84,7 +84,7 @@ class YtVideoDocument(Document):
             if values == "":
                 continue
             for value in values.split(","):
-                videos = videos.filter("term", **{key: value})
+                videos = videos.filter("term", **{key+".keyword": value})
         print(videos.to_dict())
         video_list = [hit.serialize() for hit in videos]
         return video_list
