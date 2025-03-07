@@ -84,7 +84,10 @@ class YtVideoDocument(Document):
             if values == "":
                 continue
             for value in values.split(","):
-                videos = videos.filter("term", **{key+".keyword": value})
+                if key in ["lane"]:
+                    videos = videos.filter("term", **{key: value})
+                else:
+                    videos = videos.filter("term", **{key+".keyword": value})
         print(videos.to_dict())
         video_list = [hit.serialize() for hit in videos]
         return video_list
