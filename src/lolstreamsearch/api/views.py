@@ -62,3 +62,16 @@ class TeamChampionKeywordListViewSet(GenericViewSet):
         distinct_champion_names = [bucket.key for bucket in
                                    response.aggregations.distinct_champions.buckets]
         return Response({"team_champions": distinct_champion_names})
+
+
+class OpponentTeamChampionKeywordListViewSet(GenericViewSet):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def list(self, request, *args, **kwargs):
+        # Query for distinct champion names in the Elasticsearch index
+        search = YtVideoDocument.search()
+        search.aggs.bucket("distinct_champions", "terms", field="opponent_team_champions.keyword", size=1000)
+        response = search.execute()
+        distinct_champion_names = [bucket.key for bucket in
+                                   response.aggregations.distinct_champions.buckets]
+        return Response({"opponent_team_champions": distinct_champion_names})

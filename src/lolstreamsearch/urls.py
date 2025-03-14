@@ -15,5 +15,10 @@ router.register(
     views.TeamChampionKeywordListViewSet,
     basename='team-champions'
 )
+router.register(
+    r'opponent-team-champions',
+    views.OpponentTeamChampionKeywordListViewSet,
+    basename='opponent-team-champions'
+)
 
 urlpatterns = router.urls
