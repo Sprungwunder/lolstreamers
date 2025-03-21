@@ -88,7 +88,6 @@ class YtVideoDocument(Document):
                     videos = videos.filter("term", **{key: value})
                 else:
                     videos = videos.filter("term", **{key+".keyword": value})
-        print(videos.to_dict())
         video_list = [hit.serialize() for hit in videos]
         return video_list
 
