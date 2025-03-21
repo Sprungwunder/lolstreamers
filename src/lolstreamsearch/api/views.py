@@ -30,19 +30,25 @@ class ChampionKeywordListViewSet(GenericViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def list(self, request, *args, **kwargs):
-        return get_distinct_entries("champions")
+        return get_distinct_entries("champion")
 
 class OpponentChampionKeywordListViewSet(GenericViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def list(self, request, *args, **kwargs):
-        return get_distinct_entries("opponent_champions")
+        return get_distinct_entries("opponent_champion")
 
 class RunesKeywordListViewSet(GenericViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def list(self, request, *args, **kwargs):
         return get_distinct_entries("runes")
+
+class ItemsKeywordListViewSet(GenericViewSet):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def list(self, request, *args, **kwargs):
+        return get_distinct_entries("champion_items")
 
 class TeamChampionKeywordListViewSet(GenericViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]

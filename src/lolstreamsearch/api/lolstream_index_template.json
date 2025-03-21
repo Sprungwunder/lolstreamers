@@ -30,22 +30,52 @@
           "type": "keyword"
         },
         "team_champions": {
-          "type": "keyword"
+          "type": "search_as_you_type",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
         },
         "opponent_champion": {
-          "type": "keyword"
+          "type": "search_as_you_type",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
         },
         "opponent_team_champions": {
-          "type": "keyword"
+          "type": "search_as_you_type",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
         },
         "published_at": {
           "type": "date"
         },
         "runes": {
-          "type": "keyword"
+          "type": "search_as_you_type",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
         },
         "champion_items": {
-          "type": "keyword"
+          "type": "search_as_you_type",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
         },
         "video_url": {
           "type": "keyword"

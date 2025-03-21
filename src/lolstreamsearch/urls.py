@@ -27,4 +27,10 @@ router.register(
     basename='runes'
 )
 
+router.register(
+    r'champion-items',
+    views.ItemsKeywordListViewSet,
+    basename='champion-items'
+)
+
 urlpatterns = router.urls
