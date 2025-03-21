@@ -21,7 +21,7 @@
 {
   "title": "VAYNE TOP CAN LITERALLY 1V5 THE FULL ENEMY TEAM (2 PENTAKILLS) - S14 Vayne TOP Gameplay Guide",
   "description": "VAYNE TOP CAN LITERALLY 1V5 THE FULL ENEMY TEAM (2 PENTAKILLS) - S14 Vayne TOP Gameplay Guide League of Legends Season 14 Vayne Toplane Gameplay Guide! #vayne #vayneguide #vaynegameplay ",
-  "lane": "top",
+  "lane": "Top",
   "champion": "Vayne",
   "opponent_champion": "Tahm Kench",
   "team_champions": ["Sejuani", "Sylas", "Tristana", "Poppy"],
@@ -39,7 +39,7 @@
 {
   "title": "VOLIBEAR TOP IS THE #1 NEW 1V5 END BOSS IN SPLIT 3 (QUADRA KILL) - S14 Volibear TOP Gameplay Guide",
   "description": "VOLIBEAR TOP IS THE #1 NEW 1V5 END BOSS IN SPLIT 3 (QUADRA KILL) - S14 Volibear TOP Gameplay Guide League of Legends Season 14 Volibear Toplane Gameplay Guide! #volibear #volibearguide #volibeargameplay ",
-  "lane": "top",
+  "lane": "Top",
   "champion": "Volibear",
   "opponent_champion": "Yone",
   "team_champions": ["Zac", "Neeko", "Ezreal", "Yuumi"],
@@ -51,3 +51,63 @@
   "lol_version": "14",
   "streamer": "Daveyx3 Gameplay"
 }
+
+{
+  "video_url": "https://www.youtube.com/watch?v=nYiJuweH2K0",
+  "champion": "Teemo",
+  "opponent_champion": "Bard",
+  "team_champions": [
+    "Riven", "Talon", "Lissandra", "Sivir"
+  ],
+  "opponent_team_champions": [
+    "Caitlyn", "Fizz", "Gwen","Poppy"
+  ],
+  "lane": "Support",
+  "runes": [
+    "Dark Harvest", "Cheap Shot", "Grisly Mementos", "Ultimate Hunter", "Gathering Storm","Transcendence"
+  ],
+  "champion_items": [
+    "Zaz'Zak's Realmspike", "Sorcerer's Shoes", "Liandry's Torment", "Malignance",
+  ],
+  "lol_version": "15"
+},
+
+{
+  "video_url": "https://www.youtube.com/watch?v=2GjnceQc5hE",
+  "champion": "Naafiri",
+  "opponent_champion": "Qiyana",
+  "team_champions": [
+    "Victor", "Smolder", "Sona", "Vladimir"
+  ],
+  "opponent_team_champions": [
+    "Malphite", "Talon", "Jhin","Nami"
+  ],
+  "lane": "Jungle",
+  "runes": [
+    "Conqueror", "Triumph", "Legend: Haste", "Coup de Grace", "Sudden Impact","Treasure Hunter"
+  ],
+  "champion_items": [
+    "Eclipse", "Ionian Boots of Lucidity", "Spear of Shojin", "Death's Dance"
+  ],
+  "lol_version": "15"
+},
+
+{
+  "video_url": "https://www.youtube.com/watch?v=vwfaeCoyZr4",
+  "champion": "Garen",
+  "opponent_champion": "Sion",
+  "team_champions": [
+    "Nocturne", "Brand", "Xayah", "Kayle"
+  ],
+  "opponent_team_champions": [
+    "Master Yi", "Mel", "Draven","Bard"
+  ],
+  "lane": "Top",
+  "runes": [
+    "Conqueror", "Triumph", "Legend: Haste", "Last Stand", "Demolish","Bone Plating"
+  ],
+  "champion_items": [
+    "Stridebreaker", "The Collector", "Berserker's Greaves", "Phantom Dancer", "Infinity Edge", "Mortal Reminder"
+  ],
+  "lol_version": "15"
+},

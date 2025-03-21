@@ -21,4 +21,10 @@ router.register(
     basename='opponent-team-champions'
 )
 
+router.register(
+    r'runes',
+    views.RunesKeywordListViewSet,
+    basename='runes'
+)
+
 urlpatterns = router.urls
