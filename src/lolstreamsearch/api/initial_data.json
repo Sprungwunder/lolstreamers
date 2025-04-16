@@ -133,3 +133,44 @@
   ],
   "lol_version": "15"
 },
+
+{
+  "video_url": "https://www.youtube.com/watch?v=uZeMAnXhoIU&t=1774s",
+  "champion": "Yorick",
+  "opponent_champion": "Nocturne",
+  "team_champions": [
+    "Cho'Gath", "Xerath", "Ezreal", "Lulu"
+  ],
+  "opponent_team_champions": [
+    "Pantheon", "Kassadin", "Kai'Sa","Rakan"
+  ],
+  "lane": "Jungle",
+  "runes": [
+    "Conqueror", "Triumph", "Legend: Alacrity", "Coup de Grace", "Magical Footwear", "Approach Velocity"
+  ],
+  "champion_items": [
+    "Trinity Force", "Spear of Shojin", "Plated Steelcaps", "Sterak's Gage", "Spirit Visage", "Death's Dance"
+  ],
+  "lol_version": "15"
+},
+
+
+{
+  "video_url": "https://www.youtube.com/watch?v=uZeMAnXhoIU&t=4141s",
+  "champion": "Yorick",
+  "opponent_champion": "Udyr",
+  "team_champions": [
+    "Gwen", "Xerath", "Tristana", "Yuumi"
+  ],
+  "opponent_team_champions": [
+    "Pantheon", "Syndra", "Seraphine","Rakan"
+  ],
+  "lane": "Jungle",
+  "runes": [
+    "Conqueror", "Triumph", "Legend: Alacrity", "Coup de Grace", "Magical Footwear", "Approach Velocity"
+  ],
+  "champion_items": [
+    "Trinity Force", "Spear of Shojin", "Mercury's Treads", "Force of Nature"
+  ],
+  "lol_version": "15"
+}

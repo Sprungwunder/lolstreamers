@@ -5,23 +5,23 @@ Youtube Elasticsearch Documents Model
 POST:
 
 {
-  "video_url": "https://www.youtube.com/watch?v=PDuIp8Y9aIY",
-  "champion": "Volibear",
-  "opponent_champion": "Yone",
-  "lane": "top",
-  "lol_version": "14",
+  "video_url": "https://www.youtube.com/watch?v=uZeMAnXhoIU&t=1774s",
+  "champion": "Yorick",
+  "opponent_champion": "Nocturne",
   "team_champions": [
-    "Zac", "Neeko", "Ezreal", "Poppy"
+    "Cho'Gath", "Xerath", "Ezreal", "Lulu"
   ],
   "opponent_team_champions": [
-    "Skarner", "Aurora", "Ashe", "Brand"
+    "Pantheon", "Kassadin", "Kai'Sa","Rakan"
   ],
+  "lane": "Jungle",
   "runes": [
-    "Press the Attack"
+    "Conqueror", "Triumph", "Legend: Alacrity", "Coup de Grace", "Magical Footwear", "Approach Velocity"
   ],
   "champion_items": [
-    "Nashors Tooth"
-  ]
+    "Trinity Force", "Spear of Shojin", "Plated Steelcaps", "Sterak's Gage", "Spirit Visage", "Death's Dance"
+  ],
+  "lol_version": "15"
 }
 
 
@@ -35,6 +35,7 @@ from google_api import get_yt_video_information
 class YtVideoDocument(Document):
     id = Keyword()
     ytid = Text()
+    timestamp = Text()
     title = Text()
     description = Text()
     video_url = Text()
@@ -61,6 +62,7 @@ class YtVideoDocument(Document):
         return {
             'id': self.meta.id,
             'ytid': self.ytid,
+            'timestamp': self.timestamp,
             'title': self.title,
             'description': self.description,
             'video_url': self.video_url,
@@ -100,6 +102,7 @@ class YtVideoDocument(Document):
 class YtVideoDocumentSerializer(serializers.Serializer):
     id = serializers.CharField(required=False)
     ytid = serializers.CharField(required=False)
+    timestamp = serializers.CharField(required=False)
     title = serializers.CharField(required=False)
     description = serializers.CharField(required=False)
     video_url = serializers.CharField()
@@ -117,15 +120,29 @@ class YtVideoDocumentSerializer(serializers.Serializer):
     views = serializers.IntegerField(required=False)
     likes = serializers.IntegerField(required=False)
 
-    def get_yt_id(self, instance):
-        return instance["video_url"].split("v=")[1]
+    def get_yt_id_and_timestamp(self, instance):
+        timestamp = 0
+        video_id = None
+        try:
+            # Ensure the URL has a query and extract the 'v' parameter as the YouTube ID
+            query_params = instance["video_url"].split("?", 1)[1]
+            for param in query_params.split("&"):
+                if param.startswith("v="):
+                    video_id = param.split("=")[1]
+                elif param.startswith("t="):
+                    timestamp = param.split("=")[1][:-1]
+            if not video_id:
+                raise ValueError("Video ID (v=) parameter is missing in the URL.")
+            return video_id, timestamp
+        except (IndexError, KeyError, ValueError):
+            raise ValueError("Invalid YouTube video URL provided.")
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         if isinstance(instance, YtVideoDocument):
             representation['id'] = instance.meta.id
 
-        representation['ytid'] = self.get_yt_id(instance)
+        representation['ytid'], representation['timestamp'] = self.get_yt_id_and_timestamp(instance)
         yt_info = get_yt_video_information(representation['ytid'])
         representation['views'] = yt_info.views
         representation['likes'] = yt_info.likes
@@ -134,9 +151,10 @@ class YtVideoDocumentSerializer(serializers.Serializer):
     def create(self, validated_data):
         if 'id' in validated_data:
             del validated_data['id']
-        ytid = self.get_yt_id(validated_data)
+        ytid , timestamp = self.get_yt_id_and_timestamp(validated_data)
         yt_video_info = get_yt_video_information(ytid)
         validated_data['ytid'] = ytid
+        validated_data['timestamp']  = timestamp
         validated_data['title'] = yt_video_info.title
         validated_data['description'] = yt_video_info.description
         validated_data['published_at'] = yt_video_info.published_at
