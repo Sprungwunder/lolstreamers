@@ -1,5 +1,7 @@
 from rest_framework.routers import DefaultRouter
 
+from django.urls import path
+
 from .api import views
 
 router = DefaultRouter()
@@ -33,4 +35,8 @@ router.register(
     basename='champion-items'
 )
 
-urlpatterns = router.urls
+
+urlpatterns = router.urls + [
+    path('ytvideos/activate/<str:pk>/', views.ActivateYtVideo.as_view(), name='activate-ytvideo'),
+    path('ytvideos/deactivate/<str:pk>/', views.DeactivateYtVideo.as_view(), name='deactivate-ytvideo'),
+]

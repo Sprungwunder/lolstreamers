@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from elasticsearch import NotFoundError
 from rest_framework import permissions, mixins
 from rest_framework.views import APIView
@@ -74,7 +75,32 @@ class OpponentTeamChampionKeywordListViewSet(GenericViewSet):
 
 def get_distinct_entries(field: str):
     search = YtVideoDocument.search()
+    search = search.filter("term", **{"is_active": "true"})
     search.aggs.bucket("distinct_entries", "terms", field=field+".keyword", size=1000)
     response = search.execute()
     distinct_entries = [bucket.key for bucket in response.aggregations.distinct_entries.buckets]
     return Response({field: distinct_entries})
+
+
+
+class ActivationApiView(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    is_active = None
+
+    def get_object(self):
+        try:
+            doc = YtVideoDocument.get(id=self.kwargs.get("pk"))
+            return doc
+        except NotFoundError:
+            raise Http404
+
+    def post(self, request, pk):
+        ytvideo = self.get_object()
+        ytvideo.set_active_and_serialize(is_active=self.is_active)
+        return Response({"success": True})
+
+class ActivateYtVideo(ActivationApiView):
+    is_active = True
+
+class DeactivateYtVideo(ActivationApiView):
+    is_active = False

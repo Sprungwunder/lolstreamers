@@ -93,6 +93,9 @@ class YtVideoDocument(Document):
         video_list = [hit.serialize() for hit in videos]
         return video_list
 
+    def set_active_and_serialize(self, is_active=True):
+        self.update(is_active=is_active)
+        return self.serialize()
 
 class YtVideoDocumentSerializer(serializers.Serializer):
     id = serializers.CharField(required=False)
