@@ -26,7 +26,7 @@ POST:
 
 
 """
-from elasticsearch_dsl import Text, Date, Keyword, Document
+from elasticsearch_dsl import Text, Date, Keyword, Document, Boolean
 from rest_framework import serializers
 
 from google_api import get_yt_video_information
@@ -48,6 +48,7 @@ class YtVideoDocument(Document):
     champion_items = Keyword(multi=True)
     lol_version = Keyword()
     streamer = Keyword()
+    is_active = Boolean()
 
     class Index:
         name = 'lolstreamsearch_yt_videos'
@@ -72,7 +73,8 @@ class YtVideoDocument(Document):
             'runes': self.runes,
             'champion_items': self.champion_items,
             'lol_version': self.lol_version,
-            'streamer': self.streamer
+            'streamer': self.streamer,
+            'is_active': self.is_active
         }
 
     # simple example request
@@ -84,7 +86,7 @@ class YtVideoDocument(Document):
             if values == "":
                 continue
             for value in values.split(","):
-                if key in ["lane"]:
+                if key in ["lane", "is_active"]:
                     videos = videos.filter("term", **{key: value})
                 else:
                     videos = videos.filter("term", **{key+".keyword": value})
@@ -108,6 +110,7 @@ class YtVideoDocumentSerializer(serializers.Serializer):
     champion_items = serializers.ListSerializer(child=serializers.CharField())
     lol_version = serializers.CharField()
     streamer = serializers.CharField(required=False)
+    is_active = serializers.BooleanField(required=False)
     views = serializers.IntegerField(required=False)
     likes = serializers.IntegerField(required=False)
 
@@ -135,9 +138,29 @@ class YtVideoDocumentSerializer(serializers.Serializer):
         validated_data['description'] = yt_video_info.description
         validated_data['published_at'] = yt_video_info.published_at
         validated_data['streamer'] = yt_video_info.channel
+        validated_data['is_active'] = False
         ytvideo = YtVideoDocument(**validated_data)
         result = ytvideo.save(return_doc_meta=True)
         meta_id = result.body.get("_id")
         ytvideo.meta.id = meta_id
         ytvideo.id = meta_id
         return ytvideo
+
+
+class ChampionKeywordSerializer(serializers.Serializer):
+    champion = serializers.ListSerializer(child=serializers.CharField())
+
+class OpponentChampionKeywordSerializer(serializers.Serializer):
+    opponent_champion = serializers.ListSerializer(child=serializers.CharField())
+
+class RunesKeywordSerializer(serializers.Serializer):
+    runes = serializers.ListSerializer(child=serializers.CharField())
+
+class ItemsKeywordSerializer(serializers.Serializer):
+    items = serializers.ListSerializer(child=serializers.CharField())
+
+class TeamChampionKeywordSerializer(serializers.Serializer):
+    team_champions = serializers.ListSerializer(child=serializers.CharField())
+
+class OpponentTeamChampionKeywordSerializer(serializers.Serializer):
+    opponent_team_champions = serializers.ListSerializer(child=serializers.CharField())

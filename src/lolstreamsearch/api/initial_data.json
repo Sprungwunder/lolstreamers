@@ -27,11 +27,12 @@
   "team_champions": ["Sejuani", "Sylas", "Tristana", "Poppy"],
   "opponent_team_champions": ["Skarner", "Aurora", "Ashe", "Brand"],
   "published_at": "2024-10-21T18:00:00Z",
-  "runes": ["Letahl Tempo", "Triumph", "Legend: Alactraty", "Cut Down", "Bisquit Delivery", "Cosmic Insight"],
-  "champion_items": ["Blade of The Ruined King", "Runaan's Hurricane", "Berserker's Greaves", "Terminus", "Kraken Slayer", "Bloodthirster"],
+  "runes": ["Lethal Tempo", "Triumph", "Legend: Alactraty", "Cut Down", "Bisquit Delivery", "Cosmic Insight"],
+  "champion_items": ["Blade of the Ruined King", "Runaan's Hurricane", "Berserker's Greaves", "Terminus", "Kraken Slayer", "Bloodthirster"],
   "video_url": "https://www.youtube.com/watch?v=JDMke-DhTGE",
   "lol_version": "14",
-  "streamer": "Daveyx3 Off Meta"
+  "streamer": "Daveyx3 Off Meta",
+  "is_active": true
 },
 
 
@@ -49,7 +50,8 @@
   "champion_items": ["Nashor's Tooth", "Mejai's Soulstealer", "Rabadon's Deathcap", "Riftmaker", "Zhonya's Hourglass", "Berserker's Greaves"],
   "video_url": "https://www.youtube.com/watch?v=PDuIp8Y9aIY",
   "lol_version": "14",
-  "streamer": "Daveyx3 Gameplay"
+  "streamer": "Daveyx3 Gameplay",
+  "is_active": true
 }
 
 {
@@ -67,7 +69,7 @@
     "Dark Harvest", "Cheap Shot", "Grisly Mementos", "Ultimate Hunter", "Gathering Storm","Transcendence"
   ],
   "champion_items": [
-    "Zaz'Zak's Realmspike", "Sorcerer's Shoes", "Liandry's Torment", "Malignance",
+    "Zaz'Zak's Realmspike", "Sorcerer's Shoes", "Liandry's Torment", "Malignance"
   ],
   "lol_version": "15"
 },

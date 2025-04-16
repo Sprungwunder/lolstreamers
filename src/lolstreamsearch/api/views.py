@@ -1,10 +1,13 @@
 from django.http import Http404
 from elasticsearch import NotFoundError
 from rest_framework import permissions, mixins
+from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 
-from .yt_es_documents import YtVideoDocument, YtVideoDocumentSerializer
+from .yt_es_documents import YtVideoDocument, YtVideoDocumentSerializer, ChampionKeywordSerializer, \
+    OpponentChampionKeywordSerializer, RunesKeywordSerializer, ItemsKeywordSerializer, \
+    TeamChampionKeywordSerializer, OpponentTeamChampionKeywordSerializer
 
 
 class YtVideoListViewSet(mixins.CreateModelMixin,
@@ -28,30 +31,35 @@ class YtVideoListViewSet(mixins.CreateModelMixin,
 
 class ChampionKeywordListViewSet(GenericViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = ChampionKeywordSerializer
 
     def list(self, request, *args, **kwargs):
         return get_distinct_entries("champion")
 
 class OpponentChampionKeywordListViewSet(GenericViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = OpponentChampionKeywordSerializer
 
     def list(self, request, *args, **kwargs):
         return get_distinct_entries("opponent_champion")
 
 class RunesKeywordListViewSet(GenericViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = RunesKeywordSerializer
 
     def list(self, request, *args, **kwargs):
         return get_distinct_entries("runes")
 
 class ItemsKeywordListViewSet(GenericViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = ItemsKeywordSerializer
 
     def list(self, request, *args, **kwargs):
         return get_distinct_entries("champion_items")
 
 class TeamChampionKeywordListViewSet(GenericViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = TeamChampionKeywordSerializer
 
     def list(self, request, *args, **kwargs):
         return get_distinct_entries("team_champions")
@@ -59,6 +67,7 @@ class TeamChampionKeywordListViewSet(GenericViewSet):
 
 class OpponentTeamChampionKeywordListViewSet(GenericViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = OpponentTeamChampionKeywordSerializer
 
     def list(self, request, *args, **kwargs):
         return get_distinct_entries("opponent_team_champions")

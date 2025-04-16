@@ -82,6 +82,9 @@
         },
         "streamer": {
           "type": "keyword"
+        },
+        "is_active": {
+          "type": "boolean"
         }
       }
     }
