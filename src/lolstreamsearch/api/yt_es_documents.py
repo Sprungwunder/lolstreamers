@@ -121,18 +121,41 @@ class YtVideoDocumentSerializer(serializers.Serializer):
     likes = serializers.IntegerField(required=False)
 
     def get_yt_id_and_timestamp(self, instance):
+        """
+        handles youtube video URL and returns the YouTube ID and timestamp
+        two possible formats: https://youtu.be/Kryc40r9wOg?feature=shared&t=1737
+        or:                   https://www.youtube.com/watch?v=Kryc40r9wOg&t=1737s
+
+        :return:
+        """
+        
         timestamp = 0
         video_id = None
         try:
-            # Ensure the URL has a query and extract the 'v' parameter as the YouTube ID
-            query_params = instance["video_url"].split("?", 1)[1]
-            for param in query_params.split("&"):
-                if param.startswith("v="):
-                    video_id = param.split("=")[1]
-                elif param.startswith("t="):
-                    timestamp = param.split("=")[1][:-1]
+            url = instance["video_url"]
+            if "youtu.be" in url:
+                # Handle short format
+                path = url.split("youtu.be/")[1]
+                if "?" in path:
+                    video_id = path.split("?")[0]
+                    query_params = path.split("?")[1]
+                    for param in query_params.split("&"):
+                        if param.startswith("t="):
+                            timestamp = param.split("=")[1].rstrip("s")
+                else:
+                    video_id = path
+            else:
+                # Handle long format
+                query_params = url.split("?", 1)[1]
+                for param in query_params.split("&"):
+                    if param.startswith("v="):
+                        video_id = param.split("=")[1]
+                    elif param.startswith("t="):
+                        timestamp = param.split("=")[1].rstrip("s")
+
             if not video_id:
-                raise ValueError("Video ID (v=) parameter is missing in the URL.")
+                raise ValueError("Could not extract video ID from URL")
+
             return video_id, timestamp
         except (IndexError, KeyError, ValueError):
             raise ValueError("Invalid YouTube video URL provided.")
