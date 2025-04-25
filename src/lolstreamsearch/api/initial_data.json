@@ -1,176 +1,167 @@
-{
-  "video_url": "https://www.youtube.com/watch?v=bUrhrgpg9KE",
-  "champion": "Dr. Mundo",
-  "opponent_champion": "Kha'Zix",
-  "team_champions": [
-    "Akali", "Zed", "Ezreal", "Zyra"
-  ],
-  "opponent_team_champions": [
-    "Tryndamere", "Fizz", "Sivir","Morgana"
-  ],
-  "lane": "Jungle",
-  "runes": [
-    "Fleet Footwork", "Triumph", "Legend: Haste", "Cut Down", "Magical Footwear","Approach Velocity"
-  ],
-  "champion_items": [
-    "Heartsteel", "Warmog's Armor", "Plated Steelcaps", "Spirit Visage","Randuin's Omen"
-  ],
-  "lol_version": "14"
-},
-
-{
-  "title": "VAYNE TOP CAN LITERALLY 1V5 THE FULL ENEMY TEAM (2 PENTAKILLS) - S14 Vayne TOP Gameplay Guide",
-  "description": "VAYNE TOP CAN LITERALLY 1V5 THE FULL ENEMY TEAM (2 PENTAKILLS) - S14 Vayne TOP Gameplay Guide League of Legends Season 14 Vayne Toplane Gameplay Guide! #vayne #vayneguide #vaynegameplay ",
-  "lane": "Top",
-  "champion": "Vayne",
-  "opponent_champion": "Tahm Kench",
-  "team_champions": ["Sejuani", "Sylas", "Tristana", "Poppy"],
-  "opponent_team_champions": ["Skarner", "Aurora", "Ashe", "Brand"],
-  "published_at": "2024-10-21T18:00:00Z",
-  "runes": ["Lethal Tempo", "Triumph", "Legend: Alactraty", "Cut Down", "Bisquit Delivery", "Cosmic Insight"],
-  "champion_items": ["Blade of the Ruined King", "Runaan's Hurricane", "Berserker's Greaves", "Terminus", "Kraken Slayer", "Bloodthirster"],
-  "video_url": "https://www.youtube.com/watch?v=JDMke-DhTGE",
-  "lol_version": "14",
-  "streamer": "Daveyx3 Off Meta",
-  "is_active": true
-},
-
-
-
-{
-  "title": "VOLIBEAR TOP IS THE #1 NEW 1V5 END BOSS IN SPLIT 3 (QUADRA KILL) - S14 Volibear TOP Gameplay Guide",
-  "description": "VOLIBEAR TOP IS THE #1 NEW 1V5 END BOSS IN SPLIT 3 (QUADRA KILL) - S14 Volibear TOP Gameplay Guide League of Legends Season 14 Volibear Toplane Gameplay Guide! #volibear #volibearguide #volibeargameplay ",
-  "lane": "Top",
-  "champion": "Volibear",
-  "opponent_champion": "Yone",
-  "team_champions": ["Zac", "Neeko", "Ezreal", "Yuumi"],
-  "opponent_team_champions": ["Trundle", "Ahri", "Jhinx", "Lux"],
-  "published_at": "2024-10-21T18:00:00Z",
+[
+  {
+    "video_url": "https://www.youtube.com/watch?v=bUrhrgpg9KE",
+    "champion": "Dr. Mundo",
+    "enemy_champion": "Kha'Zix",
+    "team_champions": [
+      "Akali", "Zed", "Ezreal", "Zyra"
+    ],
+    "enemy_team_champions": [
+      "Tryndamere", "Fizz", "Sivir","Morgana"
+    ],
+    "lane": "Jungle",
+    "runes": [
+      "Fleet Footwork", "Triumph", "Legend: Haste", "Cut Down", "Magical Footwear","Approach Velocity"
+    ],
+    "champion_items": [
+      "Heartsteel", "Warmog's Armor", "Plated Steelcaps", "Spirit Visage","Randuin's Omen"
+    ],
+    "lol_version": "14"
+  },
+  {
+    "title": "VAYNE TOP CAN LITERALLY 1V5 THE FULL ENEMY TEAM (2 PENTAKILLS) - S14 Vayne TOP Gameplay Guide",
+    "description": "VAYNE TOP CAN LITERALLY 1V5 THE FULL ENEMY TEAM (2 PENTAKILLS) - S14 Vayne TOP Gameplay Guide League of Legends Season 14 Vayne Toplane Gameplay Guide! #vayne #vayneguide #vaynegameplay ",
+    "lane": "Top",
+    "champion": "Vayne",
+    "enemy_champion": "Tahm Kench",
+    "team_champions": ["Sejuani", "Sylas", "Tristana", "Poppy"],
+    "enemy_team_champions": ["Skarner", "Aurora", "Ashe", "Brand"],
+    "published_at": "2024-10-21T18:00:00Z",
+    "runes": ["Lethal Tempo", "Triumph", "Legend: Alactraty", "Cut Down", "Bisquit Delivery", "Cosmic Insight"],
+    "champion_items": ["Blade of the Ruined King", "Runaan's Hurricane", "Berserker's Greaves", "Terminus", "Kraken Slayer", "Bloodthirster"],
+    "video_url": "https://www.youtube.com/watch?v=JDMke-DhTGE",
+    "lol_version": "14",
+    "streamer": "Daveyx3 Off Meta",
+    "is_active": true
+  },
+  {
+    "title": "VOLIBEAR TOP IS THE #1 NEW 1V5 END BOSS IN SPLIT 3 (QUADRA KILL) - S14 Volibear TOP Gameplay Guide",
+    "description": "VOLIBEAR TOP IS THE #1 NEW 1V5 END BOSS IN SPLIT 3 (QUADRA KILL) - S14 Volibear TOP Gameplay Guide League of Legends Season 14 Volibear Toplane Gameplay Guide! #volibear #volibearguide #volibeargameplay ",
+    "lane": "Top",
+    "champion": "Volibear",
+    "enemy_champion": "Yone",
+    "team_champions": ["Zac", "Neeko", "Ezreal", "Yuumi"],
+    "enemy_team_champions": ["Trundle", "Ahri", "Jhinx", "Lux"],
+    "published_at": "2024-10-21T18:00:00Z",
     "runes": ["Press the Attack", "Triumph", "Legend: Alactraty", "Last Stand", "Second Wind", "Overgrowth"],
-  "champion_items": ["Nashor's Tooth", "Mejai's Soulstealer", "Rabadon's Deathcap", "Riftmaker", "Zhonya's Hourglass", "Berserker's Greaves"],
-  "video_url": "https://www.youtube.com/watch?v=PDuIp8Y9aIY",
-  "lol_version": "14",
-  "streamer": "Daveyx3 Gameplay",
-  "is_active": true
-}
-
-{
-  "video_url": "https://www.youtube.com/watch?v=nYiJuweH2K0",
-  "champion": "Teemo",
-  "opponent_champion": "Bard",
-  "team_champions": [
-    "Riven", "Talon", "Lissandra", "Sivir"
-  ],
-  "opponent_team_champions": [
-    "Caitlyn", "Fizz", "Gwen","Poppy"
-  ],
-  "lane": "Support",
-  "runes": [
-    "Dark Harvest", "Cheap Shot", "Grisly Mementos", "Ultimate Hunter", "Gathering Storm","Transcendence"
-  ],
-  "champion_items": [
-    "Zaz'Zak's Realmspike", "Sorcerer's Shoes", "Liandry's Torment", "Malignance"
-  ],
-  "lol_version": "15"
-},
-
-{
-  "video_url": "https://www.youtube.com/watch?v=2GjnceQc5hE",
-  "champion": "Naafiri",
-  "opponent_champion": "Qiyana",
-  "team_champions": [
-    "Victor", "Smolder", "Sona", "Vladimir"
-  ],
-  "opponent_team_champions": [
-    "Malphite", "Talon", "Jhin","Nami"
-  ],
-  "lane": "Jungle",
-  "runes": [
-    "Conqueror", "Triumph", "Legend: Haste", "Coup de Grace", "Sudden Impact","Treasure Hunter"
-  ],
-  "champion_items": [
-    "Eclipse", "Ionian Boots of Lucidity", "Spear of Shojin", "Death's Dance"
-  ],
-  "lol_version": "15"
-},
-
-{
-  "video_url": "https://www.youtube.com/watch?v=vwfaeCoyZr4",
-  "champion": "Garen",
-  "opponent_champion": "Sion",
-  "team_champions": [
-    "Nocturne", "Brand", "Xayah", "Kayle"
-  ],
-  "opponent_team_champions": [
-    "Master Yi", "Mel", "Draven","Bard"
-  ],
-  "lane": "Top",
-  "runes": [
-    "Conqueror", "Triumph", "Legend: Haste", "Last Stand", "Demolish","Bone Plating"
-  ],
-  "champion_items": [
-    "Stridebreaker", "The Collector", "Berserker's Greaves", "Phantom Dancer", "Infinity Edge", "Mortal Reminder"
-  ],
-  "lol_version": "15"
-},
-
-{
-  "video_url": "https://www.youtube.com/watch?v=DRKgP5pgsww",
-  "champion": "Warwick",
-  "opponent_champion": "Irelia",
-  "team_champions": [
-    "Diana", "Aurelion Sol", "Varus", "Yuumi"
-  ],
-  "opponent_team_champions": [
-    "Vi", "Hwei", "Caitlyn","Janna"
-  ],
-  "lane": "Top",
-  "runes": [
-    "Lethal Tempo", "Presence of Mind", "Legend: Alacrity", "Last Stand", "Manaflow Band","Scorch"
-  ],
-  "champion_items": [
-    "Randuin's Omen", "Ravenous Hydra", "Blade of the Ruined King", "Trinity Force", "Death's Dance", "Thornmail"
-  ],
-  "lol_version": "15"
-},
-
-{
-  "video_url": "https://www.youtube.com/watch?v=uZeMAnXhoIU&t=1774s",
-  "champion": "Yorick",
-  "opponent_champion": "Nocturne",
-  "team_champions": [
-    "Cho'Gath", "Xerath", "Ezreal", "Lulu"
-  ],
-  "opponent_team_champions": [
-    "Pantheon", "Kassadin", "Kai'Sa","Rakan"
-  ],
-  "lane": "Jungle",
-  "runes": [
-    "Conqueror", "Triumph", "Legend: Alacrity", "Coup de Grace", "Magical Footwear", "Approach Velocity"
-  ],
-  "champion_items": [
-    "Trinity Force", "Spear of Shojin", "Plated Steelcaps", "Sterak's Gage", "Spirit Visage", "Death's Dance"
-  ],
-  "lol_version": "15"
-},
-
-
-{
-  "video_url": "https://www.youtube.com/watch?v=uZeMAnXhoIU&t=4141s",
-  "champion": "Yorick",
-  "opponent_champion": "Udyr",
-  "team_champions": [
-    "Gwen", "Xerath", "Tristana", "Yuumi"
-  ],
-  "opponent_team_champions": [
-    "Pantheon", "Syndra", "Seraphine","Rakan"
-  ],
-  "lane": "Jungle",
-  "runes": [
-    "Conqueror", "Triumph", "Legend: Alacrity", "Coup de Grace", "Magical Footwear", "Approach Velocity"
-  ],
-  "champion_items": [
-    "Trinity Force", "Spear of Shojin", "Mercury's Treads", "Force of Nature"
-  ],
-  "lol_version": "15"
-}
+    "champion_items": ["Nashor's Tooth", "Mejai's Soulstealer", "Rabadon's Deathcap", "Riftmaker", "Zhonya's Hourglass", "Berserker's Greaves"],
+    "video_url": "https://www.youtube.com/watch?v=PDuIp8Y9aIY",
+    "lol_version": "14",
+    "streamer": "Daveyx3 Gameplay",
+    "is_active": true
+  },
+  {
+    "video_url": "https://www.youtube.com/watch?v=nYiJuweH2K0",
+    "champion": "Teemo",
+    "enemy_champion": "Bard",
+    "team_champions": [
+      "Riven", "Talon", "Lissandra", "Sivir"
+    ],
+    "enemy_team_champions": [
+      "Caitlyn", "Fizz", "Gwen","Poppy"
+    ],
+    "lane": "Support",
+    "runes": [
+      "Dark Harvest", "Cheap Shot", "Grisly Mementos", "Ultimate Hunter", "Gathering Storm","Transcendence"
+    ],
+    "champion_items": [
+      "Zaz'Zak's Realmspike", "Sorcerer's Shoes", "Liandry's Torment", "Malignance"
+    ],
+    "lol_version": "15"
+  },
+  {
+    "video_url": "https://www.youtube.com/watch?v=2GjnceQc5hE",
+    "champion": "Naafiri",
+    "enemy_champion": "Qiyana",
+    "team_champions": [
+      "Victor", "Smolder", "Sona", "Vladimir"
+    ],
+    "enemy_team_champions": [
+      "Malphite", "Talon", "Jhin","Nami"
+    ],
+    "lane": "Jungle",
+    "runes": [
+      "Conqueror", "Triumph", "Legend: Haste", "Coup de Grace", "Sudden Impact","Treasure Hunter"
+    ],
+    "champion_items": [
+      "Eclipse", "Ionian Boots of Lucidity", "Spear of Shojin", "Death's Dance"
+    ],
+    "lol_version": "15"
+  },
+  {
+    "video_url": "https://www.youtube.com/watch?v=vwfaeCoyZr4",
+    "champion": "Garen",
+    "enemy_champion": "Sion",
+    "team_champions": [
+      "Nocturne", "Brand", "Xayah", "Kayle"
+    ],
+    "enemy_team_champions": [
+      "Master Yi", "Mel", "Draven","Bard"
+    ],
+    "lane": "Top",
+    "runes": [
+      "Conqueror", "Triumph", "Legend: Haste", "Last Stand", "Demolish","Bone Plating"
+    ],
+    "champion_items": [
+      "Stridebreaker", "The Collector", "Berserker's Greaves", "Phantom Dancer", "Infinity Edge", "Mortal Reminder"
+    ],
+    "lol_version": "15"
+  },
+  {
+    "video_url": "https://www.youtube.com/watch?v=DRKgP5pgsww",
+    "champion": "Warwick",
+    "enemy_champion": "Irelia",
+    "team_champions": [
+      "Diana", "Aurelion Sol", "Varus", "Yuumi"
+    ],
+    "enemy_team_champions": [
+      "Vi", "Hwei", "Caitlyn","Janna"
+    ],
+    "lane": "Top",
+    "runes": [
+      "Lethal Tempo", "Presence of Mind", "Legend: Alacrity", "Last Stand", "Manaflow Band","Scorch"
+    ],
+    "champion_items": [
+      "Randuin's Omen", "Ravenous Hydra", "Blade of the Ruined King", "Trinity Force", "Death's Dance", "Thornmail"
+    ],
+    "lol_version": "15"
+  },
+  {
+    "video_url": "https://www.youtube.com/watch?v=uZeMAnXhoIU&t=1774s",
+    "champion": "Yorick",
+    "enemy_champion": "Nocturne",
+    "team_champions": [
+      "Cho'Gath", "Xerath", "Ezreal", "Lulu"
+    ],
+    "enemy_team_champions": [
+      "Pantheon", "Kassadin", "Kai'Sa","Rakan"
+    ],
+    "lane": "Jungle",
+    "runes": [
+      "Conqueror", "Triumph", "Legend: Alacrity", "Coup de Grace", "Magical Footwear", "Approach Velocity"
+    ],
+    "champion_items": [
+      "Trinity Force", "Spear of Shojin", "Plated Steelcaps", "Sterak's Gage", "Spirit Visage", "Death's Dance"
+    ],
+    "lol_version": "15"
+  },
+  {
+    "video_url": "https://www.youtube.com/watch?v=uZeMAnXhoIU&t=4141s",
+    "champion": "Yorick",
+    "enemy_champion": "Udyr",
+    "team_champions": [
+      "Gwen", "Xerath", "Tristana", "Yuumi"
+    ],
+    "enemy_team_champions": [
+      "Pantheon", "Syndra", "Seraphine","Rakan"
+    ],
+    "lane": "Jungle",
+    "runes": [
+      "Conqueror", "Triumph", "Legend: Alacrity", "Coup de Grace", "Magical Footwear", "Approach Velocity"
+    ],
+    "champion_items": [
+      "Trinity Force", "Spear of Shojin", "Mercury's Treads", "Force of Nature"
+    ],
+    "lol_version": "15"
+  }
+]

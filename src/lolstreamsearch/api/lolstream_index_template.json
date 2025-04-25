@@ -38,7 +38,7 @@
             }
           }
         },
-        "opponent_champion": {
+        "enemy_champion": {
           "type": "search_as_you_type",
           "fields": {
             "keyword": {
@@ -47,7 +47,7 @@
             }
           }
         },
-        "opponent_team_champions": {
+        "enemy_team_champions": {
           "type": "search_as_you_type",
           "fields": {
             "keyword": {

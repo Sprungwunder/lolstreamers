@@ -8,9 +8,9 @@ router = DefaultRouter()
 router.register(r'ytvideos', views.YtVideoListViewSet, basename='yt_video')
 router.register(r'champions', views.ChampionKeywordListViewSet, basename='champions')
 router.register(
-    r'opponent-champions',
-    views.OpponentChampionKeywordListViewSet,
-    basename='opponent-champions'
+    r'enemy-champions',
+    views.EnemyChampionKeywordListViewSet,
+    basename='enemy-champions'
 )
 router.register(
     r'team-champions',
@@ -18,9 +18,9 @@ router.register(
     basename='team-champions'
 )
 router.register(
-    r'opponent-team-champions',
-    views.OpponentTeamChampionKeywordListViewSet,
-    basename='opponent-team-champions'
+    r'enemy-team-champions',
+    views.EnemyTeamChampionKeywordListViewSet,
+    basename='enemy-team-champions'
 )
 
 router.register(

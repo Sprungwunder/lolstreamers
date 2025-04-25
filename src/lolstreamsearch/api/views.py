@@ -7,8 +7,8 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 
 from .yt_es_documents import YtVideoDocument, YtVideoDocumentSerializer, ChampionKeywordSerializer, \
-    OpponentChampionKeywordSerializer, RunesKeywordSerializer, ItemsKeywordSerializer, \
-    TeamChampionKeywordSerializer, OpponentTeamChampionKeywordSerializer
+    EnemyChampionKeywordSerializer, RunesKeywordSerializer, ItemsKeywordSerializer, \
+    TeamChampionKeywordSerializer, EnemyTeamChampionKeywordSerializer
 
 
 class YtVideoListViewSet(mixins.CreateModelMixin,
@@ -37,12 +37,12 @@ class ChampionKeywordListViewSet(GenericViewSet):
     def list(self, request, *args, **kwargs):
         return get_distinct_entries("champion")
 
-class OpponentChampionKeywordListViewSet(GenericViewSet):
+class EnemyChampionKeywordListViewSet(GenericViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    serializer_class = OpponentChampionKeywordSerializer
+    serializer_class = EnemyChampionKeywordSerializer
 
     def list(self, request, *args, **kwargs):
-        return get_distinct_entries("opponent_champion")
+        return get_distinct_entries("enemy_champion")
 
 class RunesKeywordListViewSet(GenericViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -66,12 +66,12 @@ class TeamChampionKeywordListViewSet(GenericViewSet):
         return get_distinct_entries("team_champions")
 
 
-class OpponentTeamChampionKeywordListViewSet(GenericViewSet):
+class EnemyTeamChampionKeywordListViewSet(GenericViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    serializer_class = OpponentTeamChampionKeywordSerializer
+    serializer_class = EnemyTeamChampionKeywordSerializer
 
     def list(self, request, *args, **kwargs):
-        return get_distinct_entries("opponent_team_champions")
+        return get_distinct_entries("enemy_team_champions")
 
 def get_distinct_entries(field: str):
     search = YtVideoDocument.search()

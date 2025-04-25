@@ -7,11 +7,11 @@ POST:
 {
   "video_url": "https://www.youtube.com/watch?v=uZeMAnXhoIU&t=1774s",
   "champion": "Yorick",
-  "opponent_champion": "Nocturne",
+  "enemy_champion": "Nocturne",
   "team_champions": [
     "Cho'Gath", "Xerath", "Ezreal", "Lulu"
   ],
-  "opponent_team_champions": [
+  "enemy_team_champions": [
     "Pantheon", "Kassadin", "Kai'Sa","Rakan"
   ],
   "lane": "Jungle",
@@ -41,9 +41,9 @@ class YtVideoDocument(Document):
     video_url = Text()
     published_at = Date()
     champion = Keyword()
-    opponent_champion = Keyword()
+    enemy_champion = Keyword()
     team_champion = Keyword()
-    opponent_team_champion = Keyword(multi=True)
+    enemy_team_champion = Keyword(multi=True)
     lane = Keyword()
     runes = Keyword(multi=True)
     champion_items = Keyword(multi=True)
@@ -68,9 +68,9 @@ class YtVideoDocument(Document):
             'video_url': self.video_url,
             'published_at': self.published_at,
             'champion': self.champion,
-            'opponent_champion': self.opponent_champion,
+            'enemy_champion': self.enemy_champion,
             'team_champions': self.team_champions,
-            'opponent_team_champions': self.opponent_team_champions,
+            'enemy_team_champions': self.enemy_team_champions,
             'lane': self.lane,
             'runes': self.runes,
             'champion_items': self.champion_items,
@@ -108,9 +108,9 @@ class YtVideoDocumentSerializer(serializers.Serializer):
     video_url = serializers.CharField()
     published_at = serializers.DateTimeField(required=False)
     champion = serializers.CharField()
-    opponent_champion = serializers.CharField()
+    enemy_champion = serializers.CharField()
     team_champions = serializers.ListField(child=serializers.CharField())
-    opponent_team_champions = serializers.ListSerializer(child=serializers.CharField())
+    enemy_team_champions = serializers.ListSerializer(child=serializers.CharField())
     lane = serializers.CharField()
     runes = serializers.ListSerializer(child=serializers.CharField())
     champion_items = serializers.ListSerializer(child=serializers.CharField())
@@ -171,8 +171,8 @@ class YtVideoDocumentSerializer(serializers.Serializer):
 class ChampionKeywordSerializer(serializers.Serializer):
     champion = serializers.ListSerializer(child=serializers.CharField())
 
-class OpponentChampionKeywordSerializer(serializers.Serializer):
-    opponent_champion = serializers.ListSerializer(child=serializers.CharField())
+class EnemyChampionKeywordSerializer(serializers.Serializer):
+    enemy_champion = serializers.ListSerializer(child=serializers.CharField())
 
 class RunesKeywordSerializer(serializers.Serializer):
     runes = serializers.ListSerializer(child=serializers.CharField())
@@ -183,5 +183,5 @@ class ItemsKeywordSerializer(serializers.Serializer):
 class TeamChampionKeywordSerializer(serializers.Serializer):
     team_champions = serializers.ListSerializer(child=serializers.CharField())
 
-class OpponentTeamChampionKeywordSerializer(serializers.Serializer):
-    opponent_team_champions = serializers.ListSerializer(child=serializers.CharField())
+class EnemyTeamChampionKeywordSerializer(serializers.Serializer):
+    enemy_team_champions = serializers.ListSerializer(child=serializers.CharField())
