@@ -136,14 +136,14 @@ class YtVideoDocumentSerializer(serializers.Serializer):
             if "youtu.be" in url:
                 # Handle short format
                 path = url.split("youtu.be/")[1]
+                video_id = path
                 if "?" in path:
                     video_id = path.split("?")[0]
                     query_params = path.split("?")[1]
                     for param in query_params.split("&"):
                         if param.startswith("t="):
                             timestamp = param.split("=")[1].rstrip("s")
-                else:
-                    video_id = path
+
             else:
                 # Handle long format
                 query_params = url.split("?", 1)[1]
