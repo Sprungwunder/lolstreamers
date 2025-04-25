@@ -16,7 +16,8 @@
     "champion_items": [
       "Heartsteel", "Warmog's Armor", "Plated Steelcaps", "Spirit Visage","Randuin's Omen"
     ],
-    "lol_version": "14"
+    "lol_version": "14",
+    "is_active": false
   },
   {
     "title": "VAYNE TOP CAN LITERALLY 1V5 THE FULL ENEMY TEAM (2 PENTAKILLS) - S14 Vayne TOP Gameplay Guide",
@@ -27,7 +28,7 @@
     "team_champions": ["Sejuani", "Sylas", "Tristana", "Poppy"],
     "enemy_team_champions": ["Skarner", "Aurora", "Ashe", "Brand"],
     "published_at": "2024-10-21T18:00:00Z",
-    "runes": ["Lethal Tempo", "Triumph", "Legend: Alactraty", "Cut Down", "Bisquit Delivery", "Cosmic Insight"],
+    "runes": ["Lethal Tempo", "Triumph", "Legend: Alacrity", "Cut Down", "Bisquit Delivery", "Cosmic Insight"],
     "champion_items": ["Blade of the Ruined King", "Runaan's Hurricane", "Berserker's Greaves", "Terminus", "Kraken Slayer", "Bloodthirster"],
     "video_url": "https://www.youtube.com/watch?v=JDMke-DhTGE",
     "lol_version": "14",
@@ -43,7 +44,7 @@
     "team_champions": ["Zac", "Neeko", "Ezreal", "Yuumi"],
     "enemy_team_champions": ["Trundle", "Ahri", "Jhinx", "Lux"],
     "published_at": "2024-10-21T18:00:00Z",
-    "runes": ["Press the Attack", "Triumph", "Legend: Alactraty", "Last Stand", "Second Wind", "Overgrowth"],
+    "runes": ["Press the Attack", "Triumph", "Legend: Alacrity", "Last Stand", "Second Wind", "Overgrowth"],
     "champion_items": ["Nashor's Tooth", "Mejai's Soulstealer", "Rabadon's Deathcap", "Riftmaker", "Zhonya's Hourglass", "Berserker's Greaves"],
     "video_url": "https://www.youtube.com/watch?v=PDuIp8Y9aIY",
     "lol_version": "14",
@@ -67,7 +68,8 @@
     "champion_items": [
       "Zaz'Zak's Realmspike", "Sorcerer's Shoes", "Liandry's Torment", "Malignance"
     ],
-    "lol_version": "15"
+    "lol_version": "15",
+    "is_active": false
   },
   {
     "video_url": "https://www.youtube.com/watch?v=2GjnceQc5hE",
@@ -86,7 +88,8 @@
     "champion_items": [
       "Eclipse", "Ionian Boots of Lucidity", "Spear of Shojin", "Death's Dance"
     ],
-    "lol_version": "15"
+    "lol_version": "15",
+    "is_active": false
   },
   {
     "video_url": "https://www.youtube.com/watch?v=vwfaeCoyZr4",
@@ -105,7 +108,8 @@
     "champion_items": [
       "Stridebreaker", "The Collector", "Berserker's Greaves", "Phantom Dancer", "Infinity Edge", "Mortal Reminder"
     ],
-    "lol_version": "15"
+    "lol_version": "15",
+    "is_active": false
   },
   {
     "video_url": "https://www.youtube.com/watch?v=DRKgP5pgsww",
@@ -124,7 +128,8 @@
     "champion_items": [
       "Randuin's Omen", "Ravenous Hydra", "Blade of the Ruined King", "Trinity Force", "Death's Dance", "Thornmail"
     ],
-    "lol_version": "15"
+    "lol_version": "15",
+    "is_active": true
   },
   {
     "video_url": "https://www.youtube.com/watch?v=uZeMAnXhoIU&t=1774s",
@@ -143,7 +148,8 @@
     "champion_items": [
       "Trinity Force", "Spear of Shojin", "Plated Steelcaps", "Sterak's Gage", "Spirit Visage", "Death's Dance"
     ],
-    "lol_version": "15"
+    "lol_version": "15",
+    "is_active": false
   },
   {
     "video_url": "https://www.youtube.com/watch?v=uZeMAnXhoIU&t=4141s",
@@ -162,6 +168,7 @@
     "champion_items": [
       "Trinity Force", "Spear of Shojin", "Mercury's Treads", "Force of Nature"
     ],
-    "lol_version": "15"
+    "lol_version": "15",
+    "is_active": false
   }
 ]
