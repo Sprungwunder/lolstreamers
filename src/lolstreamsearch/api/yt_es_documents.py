@@ -42,8 +42,8 @@ class YtVideoDocument(Document):
     published_at = Date()
     champion = Keyword()
     enemy_champion = Keyword()
-    team_champion = Keyword()
-    enemy_team_champion = Keyword(multi=True)
+    team_champions = Keyword()
+    enemy_team_champions = Keyword(multi=True)
     lane = Keyword()
     runes = Keyword(multi=True)
     champion_items = Keyword(multi=True)
@@ -68,8 +68,8 @@ class YtVideoDocument(Document):
             'video_url': self.video_url,
             'published_at': self.published_at,
             'champion': self.champion,
-            'enemy_champion': self.enemy_champion,
-            'team_champions': self.team_champions,
+            'enemy_champion': getattr(self, "enemy_champion", ''),
+            'team_champions': getattr(self, "team_champion", []),
             'enemy_team_champions': self.enemy_team_champions,
             'lane': self.lane,
             'runes': self.runes,
