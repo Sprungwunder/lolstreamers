@@ -69,7 +69,7 @@ class YtVideoDocument(Document):
             'published_at': self.published_at,
             'champion': self.champion,
             'enemy_champion': getattr(self, "enemy_champion", ''),
-            'team_champions': getattr(self, "team_champion", []),
+            'team_champions': getattr(self, "team_champions", []),
             'enemy_team_champions': self.enemy_team_champions,
             'lane': self.lane,
             'runes': self.runes,
