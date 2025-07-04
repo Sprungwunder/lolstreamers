@@ -84,7 +84,7 @@ def get_distinct_entries(field: str):
 
 
 class ActivationApiView(APIView):
-    #permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     is_active = None
 
     def get_object(self):
