@@ -132,7 +132,16 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         # Für Admin-Benutzer, die sich im Admin-Panel anmelden
         'rest_framework.authentication.TokenAuthentication',
-    ]
+    ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '10/second',  # /day /minute /second
+        'user': '10/second'
+    }
+
 }
 
 # Add JWT settings

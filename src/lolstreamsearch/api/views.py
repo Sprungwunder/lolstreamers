@@ -1,7 +1,7 @@
 from django.http import Http404
-from django.shortcuts import get_object_or_404
 from elasticsearch import NotFoundError
 from rest_framework import permissions, mixins
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
@@ -11,6 +11,10 @@ from .yt_es_documents import YtVideoDocument, YtVideoDocumentSerializer, Champio
     TeamChampionKeywordSerializer, EnemyTeamChampionKeywordSerializer
 
 
+class YtVideoThrottle(UserRateThrottle):
+    rate = '20/second'
+
+
 class YtVideoListViewSet(mixins.CreateModelMixin,
                          mixins.RetrieveModelMixin,
                          mixins.DestroyModelMixin,
@@ -18,6 +22,7 @@ class YtVideoListViewSet(mixins.CreateModelMixin,
                          GenericViewSet):
     serializer_class = YtVideoDocumentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    throttle_classes = [AnonRateThrottle, YtVideoThrottle]
 
     def get_queryset(self):
         return YtVideoDocument.get_queryset(self.request.query_params)
