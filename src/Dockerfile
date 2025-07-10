@@ -9,6 +9,7 @@ ENV POETRY_VERSION=1.7.1
 ENV POETRY_HOME=/opt/poetry
 ENV POETRY_VENV=/opt/poetry-venv
 ENV POETRY_CACHE_DIR=/opt/.cache
+ENV PYTHONPATH=/app/src
 
 # Create and set working directory
 WORKDIR /app
@@ -42,14 +43,13 @@ RUN poetry config virtualenvs.create false
 RUN poetry install --no-interaction --no-ansi --no-root
 
 # Copy project
-COPY src/ /app/
-COPY pyproject.toml poetry.lock ./
+COPY . /app/
 
 # Install the project itself
 RUN poetry install --no-interaction --no-ansi
 
 # Collect static files
-RUN poetry run python manage.py collectstatic --noinput
+RUN cd src && poetry run python manage.py collectstatic --noinput
 
 # Create and switch to non-root user
 RUN useradd -m django
@@ -62,4 +62,4 @@ USER django
 EXPOSE 8000
 
 # Start Gunicorn
-CMD ["poetry", "run", "gunicorn", "--bind", "0.0.0.0:8000", "lolstreamers.wsgi:application", "--workers", "3"]
+CMD ["poetry", "run", "gunicorn", "--chdir", "src", "--bind", "0.0.0.0:8000", "lolstreamers.wsgi:application", "--workers", "3"]
