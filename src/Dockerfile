@@ -1,4 +1,3 @@
-
 # Use an official Python runtime as a parent image
 FROM python:3.11-slim
 
@@ -31,7 +30,7 @@ RUN python3 -m venv $POETRY_VENV \
 ENV PATH="${PATH}:${POETRY_VENV}/bin"
 
 # Copy poetry configuration files
-COPY ../poetry.lock ../pyproject.toml ./
+COPY poetry.lock pyproject.toml ./
 
 # Configure poetry
 RUN poetry config virtualenvs.create false
@@ -40,7 +39,7 @@ RUN poetry config virtualenvs.create false
 RUN poetry install --no-interaction --no-ansi --no-root --no-dev
 
 # Copy project
-COPY ../src
+COPY . .
 
 # Collect static files
 RUN python manage.py collectstatic --noinput

@@ -10,7 +10,6 @@ services:
       - "8000:8000"
     networks:
       - web-app-network
-    # other config...
 
 networks:
   web-app-network:
