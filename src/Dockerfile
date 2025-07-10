@@ -36,13 +36,17 @@ COPY poetry.lock pyproject.toml ./
 RUN poetry config virtualenvs.create false
 
 # Install dependencies
-RUN poetry install --no-interaction --no-ansi --no-root --no-dev
+RUN poetry install --no-interaction --no-ansi --no-root
 
 # Copy project
-COPY . .
+COPY src/ /app/
+COPY pyproject.toml poetry.lock ./
+
+# Install the project itself
+RUN poetry install --no-interaction --no-ansi
 
 # Collect static files
-RUN python manage.py collectstatic --noinput
+RUN poetry run python manage.py collectstatic --noinput
 
 # Create and switch to non-root user
 RUN useradd -m django
