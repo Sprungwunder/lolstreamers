@@ -1,4 +1,6 @@
-from django.http import Http404
+from django.http import Http404, JsonResponse
+from django.middleware.csrf import get_token
+from django.views.decorators.csrf import ensure_csrf_cookie
 from elasticsearch import NotFoundError
 from rest_framework import permissions, mixins
 from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
@@ -13,6 +15,14 @@ from .yt_es_documents import YtVideoDocument, YtVideoDocumentSerializer, Champio
 
 class YtVideoThrottle(UserRateThrottle):
     rate = '20/second'
+
+
+@ensure_csrf_cookie
+def get_csrf_token(request):
+    """
+    This view sends the CSRF token that will be used by the frontend
+    """
+    return JsonResponse({'csrfToken': get_token(request)})
 
 
 class YtVideoListViewSet(mixins.CreateModelMixin,

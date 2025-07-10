@@ -21,6 +21,7 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
 from api.authentication import CookieTokenObtainPairView, CookieTokenRefreshView, LogoutView
+from api.views import get_csrf_token
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -37,6 +38,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
+    path('api/csrf/', get_csrf_token, name='csrf_token'),
     path('api/token/', CookieTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', CookieTokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/logout/', LogoutView.as_view(), name='auth_logout'),

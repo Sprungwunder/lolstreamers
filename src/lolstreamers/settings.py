@@ -151,7 +151,6 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': False,
-
     'AUTH_COOKIE': 'access_token',  # Cookie name for access token
     'AUTH_COOKIE_REFRESH': 'refresh_token',  # Cookie name for refresh token
     'AUTH_COOKIE_DOMAIN': None,    # Change if needed
