@@ -1,0 +1,17 @@
+# Django project docker-compose.yml
+version: '3.8'
+
+services:
+  django-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - web-app-network
+    # other config...
+
+networks:
+  web-app-network:
+    external: true
