@@ -5,7 +5,7 @@ services:
   django-api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: src/Dockerfile
     ports:
       - "8000:8000"
     networks:
