@@ -5,6 +5,8 @@ services:
       dockerfile: src/Dockerfile
     ports:
       - "8000:8000"
+    volumes:
+      - ./src:/app/src
     networks:
       - web-app-network
 
