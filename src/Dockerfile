@@ -21,6 +21,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Create poetry cache directory and set permissions
+RUN mkdir -p $POETRY_CACHE_DIR && chmod 777 $POETRY_CACHE_DIR
+
 # Install poetry separated from system interpreter
 RUN python3 -m venv $POETRY_VENV \
     && $POETRY_VENV/bin/pip install -U pip setuptools \
@@ -51,6 +54,8 @@ RUN poetry run python manage.py collectstatic --noinput
 # Create and switch to non-root user
 RUN useradd -m django
 RUN chown -R django:django /app
+RUN chown -R django:django $POETRY_CACHE_DIR
+
 USER django
 
 # Expose the port the app runs on
