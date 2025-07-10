@@ -20,8 +20,8 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
-from api.authentication import CookieTokenObtainPairView, CookieTokenRefreshView, LogoutView
-from api.views import get_csrf_token
+from lolstreamsearch.api.authentication import CookieTokenObtainPairView, CookieTokenRefreshView, LogoutView
+from lolstreamsearch.api.views import get_csrf_token
 
 schema_view = get_schema_view(
     openapi.Info(
