@@ -64,6 +64,7 @@ ELASTICSEARCH_DSL = {
             os.getenv('ELASTIC_API_KEY')
         ),
         'verify_certs': True,
+        'ca_certs': '/app/certs/http_ca.crt',
         'ssl_show_warn': False,
         'timeout': 30,
         'retry_on_timeout': True,
@@ -112,6 +113,9 @@ REQUIRED_ENV_VARS = [
     'ELASTIC_HOST',
     'ELASTIC_API_KEY_ID',
     'ELASTIC_API_KEY',
+    'ALLOWED_HOSTS',
+    'CORS_ALLOWED_ORIGINS',
+    'CSRF_TRUSTED_ORIGINS'
 ]
 
 for var in REQUIRED_ENV_VARS:

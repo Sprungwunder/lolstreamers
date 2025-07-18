@@ -25,6 +25,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Create poetry cache directory and set permissions
 RUN mkdir -p $POETRY_CACHE_DIR && chmod 777 $POETRY_CACHE_DIR
 
+# Create directory for certificates
+RUN mkdir -p /app/certs
+
+
 # Install poetry separated from system interpreter
 RUN python3 -m venv $POETRY_VENV \
     && $POETRY_VENV/bin/pip install -U pip setuptools \
