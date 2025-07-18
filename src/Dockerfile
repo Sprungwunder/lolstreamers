@@ -52,13 +52,19 @@ COPY . /app/
 # Install the project itself
 RUN poetry install --no-interaction --no-ansi
 
-# Collect static files
-RUN cd src && poetry run python manage.py collectstatic --noinput
-
 # Create and switch to non-root user
 RUN useradd -m django
 RUN chown -R django:django /app
 RUN chown -R django:django $POETRY_CACHE_DIR
+
+# Create static files directory with correct permissions
+RUN mkdir -p /app/src/lolstreamers/staticfiles
+RUN chown -R django:django /app/src/lolstreamers/staticfiles
+
+# Collect static files
+RUN cd src && poetry run python manage.py collectstatic --noinput
+
+#RUN ls -al /app/src/lolstreamers/staticfiles
 
 USER django
 

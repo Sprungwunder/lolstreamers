@@ -85,7 +85,7 @@ ELASTICSEARCH_DSL = {
 }
 
 # Static files configuration
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'lolstreamers', 'staticfiles')
 STATIC_URL = os.getenv('STATIC_URL', '/lolstreamers/api/static/')
 
 # Media files configuration

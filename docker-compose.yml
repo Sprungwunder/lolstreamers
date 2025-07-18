@@ -1,3 +1,4 @@
+
 services:
   django-api:
     build:
@@ -7,12 +8,15 @@ services:
       - "8000:8000"
     volumes:
       - ./src:/app/src
-      - ./certs:/app/certs:ro  # Mount certificates as read-only
-      - ./src/staticfiles:/app/src/staticfiles
+      - static_volume:/app/src/lolstreamers/staticfiles  # Add this line
+      - ./certs:/app/certs:ro
     env_file:
       - .env
     networks:
       - web-app-network
+
+volumes:
+  static_volume:  # Add this volume definition
 
 networks:
   web-app-network:
