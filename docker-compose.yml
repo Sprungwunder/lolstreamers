@@ -8,6 +8,7 @@ services:
     volumes:
       - ./src:/app/src
       - ./certs:/app/certs:ro  # Mount certificates as read-only
+      - ./src/staticfiles:/app/src/staticfiles
     env_file:
       - .env
     networks:
