@@ -10,6 +10,18 @@ DEBUG = False
 # Define allowed hosts
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
+# Disable Swagger UI in production
+SWAGGER_SETTINGS = {
+    'ENABLED': False,
+}
+
+REST_FRAMEWORK = {
+    **REST_FRAMEWORK,  # Keep existing REST_FRAMEWORK settings
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ]
+}
+
 
 # Use SQLite for testing
 DATABASES = {

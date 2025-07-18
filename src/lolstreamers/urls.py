@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from drf_yasg import openapi
@@ -37,12 +38,19 @@ schema_view = get_schema_view(
 )
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
     path('api/csrf/', get_csrf_token, name='csrf_token'),
     path('api/token/', CookieTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', CookieTokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/logout/', LogoutView.as_view(), name='auth_logout'),
-    path('streamers/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('streamers/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path("streamers/", include("lolstreamsearch.urls")),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        path('api-auth/', include('rest_framework.urls')),
+        path('streamers/swagger/', schema_view.with_ui('swagger', cache_timeout=0),
+             name='schema-swagger-ui'),
+        path('streamers/redoc/', schema_view.with_ui('redoc', cache_timeout=0),
+             name='schema-redoc'),
+
+    ]
