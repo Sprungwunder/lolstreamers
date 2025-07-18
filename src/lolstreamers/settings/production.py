@@ -69,6 +69,7 @@ ELASTICSEARCH_DSL = {
         'timeout': 30,
         'retry_on_timeout': True,
         'max_retries': 3,
+        'url_prefix': 'es',
     }
 }
 
