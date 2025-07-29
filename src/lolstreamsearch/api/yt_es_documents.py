@@ -123,9 +123,9 @@ def validate_youtube_url(url):
         raise ValueError("Invalid URL format")
 
     # Case insensitive regex for YouTube-specific validation
-    youtube_regex = r'^(?i)(https?://)?(www\.)?(youtube\.com/watch\?v=|youtu\.be/)[a-zA-Z0-9_-]{11}([?&][^&\s]*)*$'
+    youtube_regex = r'^(https?://)?(www\.)?(youtube\.com/watch\?v=|youtu\.be/)[a-zA-Z0-9_-]{11}([?&][^&\s]*)*$'
 
-    if not re.match(youtube_regex, url):
+    if not re.match(youtube_regex, url, re.IGNORECASE):
         raise ValueError("Invalid YouTube URL format")
 
     # Ensure HTTPS in production
