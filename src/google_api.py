@@ -1,10 +1,22 @@
 import os
 
 from googleapiclient.discovery import build
+from googleapiclient.discovery_cache.base import Cache
+import ssl
 
 api_key = os.getenv("YT_API_KEY")
 
 YOUTUBE = None
+
+
+class MemoryCache(Cache):
+    _CACHE = {}
+
+    def get(self, url):
+        return MemoryCache._CACHE.get(url)
+
+    def set(self, url, content):
+        MemoryCache._CACHE[url] = content
 
 
 def get_yt_connection():
@@ -12,7 +24,15 @@ def get_yt_connection():
     if api_key is None:
         raise ValueError("YouTube API key is missing")
     if YOUTUBE is None:
-        YOUTUBE = build('youtube', 'v3', developerKey=api_key)
+        # Configure SSL context
+        ssl_context = ssl.create_default_context()
+        ssl_context.check_hostname = False
+        ssl_context.verify_mode = ssl.CERT_NONE
+
+        YOUTUBE = build('youtube', 'v3',
+                        developerKey=api_key,
+                        cache=MemoryCache(),
+                        static_discovery=False)
     return YOUTUBE
 
 
@@ -67,8 +87,11 @@ json response example:
 """
 
 
-class YoutubeVideoInformation():
+class YoutubeVideoInformation:
     def __init__(self, data: dict):
+        if not data.get('items'):
+            raise ValueError("No video information available")
+
         self._data = data['items'][0]
         self.title = self._data['snippet']['title']
         self.description = self._data['snippet']['description']
@@ -79,11 +102,30 @@ class YoutubeVideoInformation():
 
 
 def get_yt_video_information(video_id: str) -> YoutubeVideoInformation:
-    request = get_yt_connection().videos().list(
-        part="snippet,statistics",
-        id=video_id
-    )
-    return YoutubeVideoInformation(request.execute())
+    try:
+        request = get_yt_connection().videos().list(
+            part="snippet,statistics",
+            id=video_id
+        )
+        response = request.execute()
+        return YoutubeVideoInformation(response)
+    except ssl.SSLError:
+        # Fallback with minimal information if YouTube API fails
+        return YoutubeVideoInformation({
+            'items': [{
+                'snippet': {
+                    'title': 'Unavailable',
+                    'description': 'Video information temporarily unavailable',
+                    'publishedAt': None,
+                    'channelTitle': 'Unknown'
+                },
+                'statistics': {
+                    'viewCount': '0',
+                    'likeCount': '0'
+                }
+            }]
+        })
+
 
 
 def main():

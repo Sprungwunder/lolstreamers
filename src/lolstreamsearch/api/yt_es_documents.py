@@ -28,12 +28,17 @@ POST:
 """
 import re
 
+import urllib3
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 from elasticsearch_dsl import Text, Date, Keyword, Document, Boolean
 from rest_framework import serializers
 
 from google_api import get_yt_video_information
+from lolstreamers import settings
+
+if settings.DEBUG:
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class YtVideoDocument(Document):
