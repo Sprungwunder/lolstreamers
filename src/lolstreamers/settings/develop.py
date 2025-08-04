@@ -58,3 +58,40 @@ CSRF_COOKIE_SECURE = False
 # Static files configuration
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'json': {
+            '()': 'django_json_logging.formatters.JSONFormatter',
+        },
+    },
+    'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'json',
+        },
+        'console_verbose': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'json',
+        }
+    },
+    'loggers': {
+        'google_api': {
+            'handlers': ['console_verbose'],
+            'level': 'DEBUG',
+        },
+        'lolstreamsearch.api': {
+            'handlers': ['console_verbose'],
+            'level': 'DEBUG',
+        }
+    }
+}

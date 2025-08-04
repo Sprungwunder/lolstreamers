@@ -1,12 +1,21 @@
+import logging
 import os
+import time
+import socket
 
 from googleapiclient.discovery import build
 from googleapiclient.discovery_cache.base import Cache
+from googleapiclient.errors import HttpError
 import ssl
 
 api_key = os.getenv("YT_API_KEY")
 
 YOUTUBE = None
+MAX_RETRIES = 3
+TIMEOUT = 5  # seconds
+BACKOFF_FACTOR = 2
+
+logger = logging.getLogger(__name__)
 
 
 class MemoryCache(Cache):
@@ -102,30 +111,49 @@ class YoutubeVideoInformation:
 
 
 def get_yt_video_information(video_id: str) -> YoutubeVideoInformation:
-    try:
-        request = get_yt_connection().videos().list(
-            part="snippet,statistics",
-            id=video_id
-        )
-        response = request.execute()
-        return YoutubeVideoInformation(response)
-    except ssl.SSLError:
-        # Fallback with minimal information if YouTube API fails
-        return YoutubeVideoInformation({
-            'items': [{
-                'snippet': {
-                    'title': 'Unavailable',
-                    'description': 'Video information temporarily unavailable',
-                    'publishedAt': None,
-                    'channelTitle': 'Unknown'
-                },
-                'statistics': {
-                    'viewCount': '0',
-                    'likeCount': '0'
-                }
-            }]
-        })
+    retry_count = 0
+    last_exception = None
+    logger.debug(f"Fetching video information for video ID: {video_id}")
+    while retry_count < MAX_RETRIES:
+        try:
+            # Set timeout for this request
+            socket.setdefaulttimeout(TIMEOUT)
 
+            request = get_yt_connection().videos().list(
+                part="snippet,statistics",
+                id=video_id
+            )
+            response = request.execute()
+            logger.debug(f"Video information response: {response}")
+            return YoutubeVideoInformation(response)
+        except (ssl.SSLError, TimeoutError, HttpError) as e:
+            logger.error(f"Error fetching video information: {str(e)}")
+            last_exception = e
+            retry_count += 1
+            if retry_count < MAX_RETRIES:
+                # Exponential backoff
+                time.sleep(BACKOFF_FACTOR ** retry_count)
+            continue
+        except Exception as e:
+            logger.error(f"Error fetching video information: {str(e)}")
+            retry_count += 1
+            last_exception = e
+            pass
+    # For any other unexpected errors, return minimal information
+    return YoutubeVideoInformation({
+        'items': [{
+            'snippet': {
+                'title': 'Unavailable',
+                'description': f'Video information unavailable: {str(last_exception)}',
+                'publishedAt': None,
+                'channelTitle': 'Unknown'
+            },
+            'statistics': {
+                'viewCount': '0',
+                'likeCount': '0'
+            }
+        }]
+    })
 
 
 def main():

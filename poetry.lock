@@ -232,6 +232,25 @@ files = [
 Django = ">=4.2"
 
 [[package]]
+name = "django-json-logger"
+version = "0.1.1"
+description = "A Django app to logging in json format."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "django_json_logger-0.1.1-py3-none-any.whl", hash = "sha256:31638f6271dd9b9f66afd101ed959f987dca798c0c6ebd6edd2cdb94d862accc"},
+    {file = "django_json_logger-0.1.1.tar.gz", hash = "sha256:7a21de4197314ff0423f2535ab00d23b47befee9576295c61ada9b6e7ec333bd"},
+]
+
+[package.dependencies]
+django = ">=3.0"
+
+[package.extras]
+dev = ["black", "isort", "orjson", "ujson"]
+orjson = ["orjson (>=3.4.3)"]
+ujson = ["ujson (>=4.2.0)"]
+
+[[package]]
 name = "djangorestframework"
 version = "3.15.2"
 description = "Web APIs for Django, made easy."
@@ -915,4 +934,4 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "5565f95bedc9d904a60be4040fdd107bd1673843d485b0b9b3af3957c8616a2f"
+content-hash = "c969f27678e04103250f08f54c833967e88eceb7cd7e14294488501bdde76c0c"

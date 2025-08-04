@@ -97,9 +97,8 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-            'style': '{',
+        'json': {
+            '()': 'django_json_logging.formatters.JSONFormatter',
         },
     },
     'handlers': {
@@ -107,15 +106,23 @@ LOGGING = {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
             'filename': os.path.join(BASE_DIR, 'logs', 'django.log'),
-            'formatter': 'verbose',
+            'formatter': 'json',
         },
     },
     'loggers': {
         'django': {
             'handlers': ['file'],
-            'level': 'ERROR',
+            'level': 'WARNING',
             'propagate': True,
         },
+        'google_api': {
+            'handlers': ['file'],
+            'level': 'WARNING',
+        },
+        'lolstreamsearch.api': {
+            'handlers': ['file'],
+            'level': 'INFO',
+        }
     },
 }
 

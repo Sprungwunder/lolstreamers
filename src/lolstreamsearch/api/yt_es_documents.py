@@ -27,6 +27,7 @@ POST:
 
 """
 import re
+import logging
 
 import urllib3
 from django.core.exceptions import ValidationError
@@ -39,6 +40,8 @@ from lolstreamers import settings
 
 if settings.DEBUG:
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+logger = logging.getLogger(__name__)
 
 
 class YtVideoDocument(Document):
@@ -92,6 +95,7 @@ class YtVideoDocument(Document):
     # ...ytvideos/?champion=Volibear&lane=&opponent_champion=&runes=Press%20the%20Attack&team_champions=Neeko%2CEzreal%2CPoppy%2CVayne
     @staticmethod
     def get_queryset(query_params):
+        logger.debug("Querying Youtube videos with query params: %s", query_params)
         videos = YtVideoDocument.search()
         for key, values in query_params.items():
             if values == "":
@@ -105,11 +109,13 @@ class YtVideoDocument(Document):
         return video_list
 
     def set_active_and_serialize(self, is_active=True):
+        logger.debug("Setting Youtube video %s to active: %s", self.meta.id, is_active)
         self.update(is_active=is_active)
         return self.serialize()
 
 
 def validate_youtube_url(url):
+    logger.debug("Validating YouTube URL: %s", url)
     if not url or not isinstance(url, str):
         raise ValueError("Invalid URL type")
 
@@ -169,6 +175,7 @@ class YtVideoDocumentSerializer(serializers.Serializer):
 
         :return:
         """
+        logger.debug("Getting YouTube ID and timestamp from instance: %s", instance)
         timestamp = 0
         video_id = None
 
