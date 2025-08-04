@@ -29,6 +29,7 @@ class YtVideoListViewSet(mixins.CreateModelMixin,
                          mixins.RetrieveModelMixin,
                          mixins.DestroyModelMixin,
                          mixins.ListModelMixin,
+                         mixins.UpdateModelMixin,
                          GenericViewSet):
     serializer_class = YtVideoDocumentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]

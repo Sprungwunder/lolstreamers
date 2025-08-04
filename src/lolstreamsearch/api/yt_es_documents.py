@@ -54,7 +54,7 @@ class YtVideoDocument(Document):
     published_at = Date()
     champion = Keyword()
     enemy_champion = Keyword()
-    team_champions = Keyword()
+    team_champions = Keyword(multi=True)
     enemy_team_champions = Keyword(multi=True)
     lane = Keyword()
     runes = Keyword(multi=True)
@@ -224,9 +224,7 @@ class YtVideoDocumentSerializer(serializers.Serializer):
         representation['likes'] = yt_info.likes
         return representation
 
-    def create(self, validated_data):
-        if 'id' in validated_data:
-            del validated_data['id']
+    def _set_validated_data(self, validated_data):
         ytid, timestamp = self.get_yt_id_and_timestamp(validated_data, validate=True)
         yt_video_info = get_yt_video_information(ytid)
         validated_data['ytid'] = ytid
@@ -235,13 +233,26 @@ class YtVideoDocumentSerializer(serializers.Serializer):
         validated_data['description'] = yt_video_info.description
         validated_data['published_at'] = yt_video_info.published_at
         validated_data['streamer'] = yt_video_info.channel
-        validated_data['is_active'] = False
+
+    def _save(self, validated_data):
         ytvideo = YtVideoDocument(**validated_data)
         result = ytvideo.save(return_doc_meta=True)
         meta_id = result.body.get("_id")
         ytvideo.meta.id = meta_id
         ytvideo.id = meta_id
         return ytvideo
+
+    def create(self, validated_data):
+        if 'id' in validated_data:
+            del validated_data['id']
+        self._set_validated_data(validated_data)
+        validated_data['is_active'] = False
+        return self._save(validated_data)
+
+    def update(self, instance, validated_data):
+        self._set_validated_data(validated_data)
+        validated_data['_id'] = instance.meta.id
+        return self._save(validated_data)
 
 
 class ChampionKeywordSerializer(serializers.Serializer):
