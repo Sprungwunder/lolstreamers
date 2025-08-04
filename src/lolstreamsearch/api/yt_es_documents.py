@@ -97,6 +97,7 @@ class YtVideoDocument(Document):
     def get_queryset(query_params):
         logger.debug("Querying Youtube videos with query params: %s", query_params)
         videos = YtVideoDocument.search()
+        videos = videos.sort("-published_at")
         for key, values in query_params.items():
             if values == "":
                 continue
