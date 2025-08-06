@@ -1,5 +1,6 @@
 
 from .base import *
+import sentry_sdk
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
@@ -140,3 +141,10 @@ REQUIRED_ENV_VARS = [
 for var in REQUIRED_ENV_VARS:
     if not os.getenv(var):
         raise Exception(f'Required environment variable "{var}" is not set')
+
+sentry_sdk.init(
+    dsn="https://9ef851176a32daa690a00b7f68138a03@o138526.ingest.us.sentry.io/4509797645811712",
+    # Add data like request headers and IP for users,
+    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+    send_default_pii=True,
+)
