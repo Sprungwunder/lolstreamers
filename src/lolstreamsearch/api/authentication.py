@@ -41,9 +41,27 @@ class CookieTokenObtainPairView(TokenObtainPairView):
 
 
 class CookieTokenRefreshView(TokenRefreshView):
+    def post(self, request, *args, **kwargs):
+        # Get refresh token from the cookie instead of request body
+        refresh_token = request.COOKIES.get('refresh_token')
+
+        if not refresh_token:
+            return Response({"detail": "No valid refresh token found."},
+                            status=status.HTTP_401_UNAUTHORIZED)
+
+        # Add the token to the request data
+        request.data['refresh'] = refresh_token
+
+        # Call the parent implementation
+        return super().post(request, *args, **kwargs)
+
     def finalize_response(self, request, response, *args, **kwargs):
         if response.data.get('access'):
             set_cookie(response)
+
+        if response.data.get('refresh'):
+            refresh(response)
+
         return super().finalize_response(request, response, *args, **kwargs)
 
 
