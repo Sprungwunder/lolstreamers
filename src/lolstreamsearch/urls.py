@@ -35,6 +35,12 @@ router.register(
     basename='champion-items'
 )
 
+router.register(
+    'streamers',
+    views.StreamerKeywordListViewSet,
+    basename='streamers'
+)
+
 
 urlpatterns = router.urls + [
     path('ytvideos/activate/<str:pk>/', views.ActivateYtVideo.as_view(), name='activate-ytvideo'),

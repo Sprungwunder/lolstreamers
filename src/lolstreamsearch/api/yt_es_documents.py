@@ -101,11 +101,21 @@ class YtVideoDocument(Document):
         for key, values in query_params.items():
             if values == "":
                 continue
-            for value in values.split(","):
-                if key in ["lane", "is_active"]:
-                    videos = videos.filter("term", **{key: value})
-                else:
+            values_list = values.split(",")
+            if key == "streamer" and len(values_list) > 1:
+                # Create a bool query with should clauses for multiple streamers
+                should_clauses = []
+                for value in values_list:
+                    should_clauses.append({"term": {"streamer": value}})
+                videos = videos.query("bool", should=should_clauses)
+            elif key in ["lane", "is_active"]:
+                videos = videos.filter("term", **{key: values})
+            else:
+                for value in values_list:
                     videos = videos.filter("term", **{key + ".keyword": value})
+
+        logger.debug(f"videos.to_dict(): {videos.to_dict()}")
+        logger.debug("Found %s videos", videos.count())
         video_list = [hit.serialize() for hit in videos]
         return video_list
 
@@ -277,3 +287,6 @@ class TeamChampionKeywordSerializer(serializers.Serializer):
 
 class EnemyTeamChampionKeywordSerializer(serializers.Serializer):
     enemy_team_champions = serializers.ListSerializer(child=serializers.CharField())
+
+class StreamerKeywordSerializer(serializers.Serializer):
+    streamer = serializers.ListSerializer(child=serializers.CharField())

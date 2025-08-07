@@ -1,3 +1,4 @@
+import logging
 from django.http import Http404, JsonResponse
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -10,8 +11,10 @@ from rest_framework.response import Response
 
 from .yt_es_documents import YtVideoDocument, YtVideoDocumentSerializer, ChampionKeywordSerializer, \
     EnemyChampionKeywordSerializer, RunesKeywordSerializer, ItemsKeywordSerializer, \
-    TeamChampionKeywordSerializer, EnemyTeamChampionKeywordSerializer
+    TeamChampionKeywordSerializer, EnemyTeamChampionKeywordSerializer, StreamerKeywordSerializer
 
+
+logger = logging.getLogger(__name__)
 
 class YtVideoThrottle(UserRateThrottle):
     rate = '20/second'
@@ -89,10 +92,19 @@ class EnemyTeamChampionKeywordListViewSet(GenericViewSet):
     def list(self, request, *args, **kwargs):
         return get_distinct_entries("enemy_team_champions")
 
-def get_distinct_entries(field: str):
+class StreamerKeywordListViewSet(GenericViewSet):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = StreamerKeywordSerializer
+
+    def list(self, request, *args, **kwargs):
+        return get_distinct_entries("streamer", as_keyword="")
+
+
+def get_distinct_entries(field: str, as_keyword=".keyword"):
     search = YtVideoDocument.search()
     search = search.filter("term", **{"is_active": "true"})
-    search.aggs.bucket("distinct_entries", "terms", field=field+".keyword", size=1000)
+    search.aggs.bucket("distinct_entries", "terms", field=field+as_keyword, size=300)
+    logger.debug(f"Executing search: {search.to_dict()}")
     response = search.execute()
     distinct_entries = [bucket.key for bucket in response.aggregations.distinct_entries.buckets]
     return Response({field: distinct_entries})
