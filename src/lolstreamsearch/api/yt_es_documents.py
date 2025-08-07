@@ -102,7 +102,7 @@ class YtVideoDocument(Document):
             if values == "":
                 continue
             values_list = values.split(",")
-            if key == "streamer" and len(values_list) > 1:
+            if key == "streamer":
                 # Create a bool query with should clauses for multiple streamers
                 should_clauses = []
                 for value in values_list:
