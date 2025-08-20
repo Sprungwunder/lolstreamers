@@ -1,0 +1,36 @@
+filebeat.modules:
+  - module: apache
+    access:
+      enabled: true
+      var.paths:
+        - /var/log/apache2/*access*.log
+    error:
+      enabled: true
+      var.paths:
+        - /var/log/apache2/*error*.log
+
+# Reduce noise and add some standard fields
+processors:
+  - add_host_metadata: ~
+  - add_cloud_metadata: ~
+  - add_docker_metadata: ~
+  - add_fields:
+      target: ''
+      fields:
+        service.name: apache
+        observer.type: filebeat
+
+output.elasticsearch:
+  hosts: ${ELASTIC_HOSTS}
+  # Accepts either a base64 API key string or "id:api_key".
+  # We provide the combined value from docker-compose.
+  api_key: ${ELASTIC_API_KEY_COMBINED}
+  ssl:
+    certificate_authorities: ["/certs/elastic.crt"]
+    verification_mode: full
+
+setup.template.enabled: true
+setup.template.overwrite: false
+
+logging.to_stderr: true
+logging.json: true
