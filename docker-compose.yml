@@ -29,7 +29,7 @@ services:
       #   ELASTIC_API_KEY=...
       - ELASTIC_API_KEY_COMBINED=${ELASTIC_API_KEY_ID:-}:${ELASTIC_API_KEY:-}
       # Comma-separated list of hosts, e.g. https://es1:9200,https://es2:9200
-      - ELASTIC_HOSTS=${ELASTIC_HOST:-}
+      - ELASTIC_HOSTS=${ELASTIC_BASE_HOST:-}
     networks:
       - web-app-network
     restart: unless-stopped

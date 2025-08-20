@@ -25,6 +25,7 @@ output.elasticsearch:
   # Accepts either a base64 API key string or "id:api_key".
   # We provide the combined value from docker-compose.
   api_key: ${ELASTIC_API_KEY_COMBINED}
+  path: "/es"
   ssl:
     certificate_authorities: ["/certs/elastic_http_ca.crt"]
     verification_mode: full
