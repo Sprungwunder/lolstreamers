@@ -4,12 +4,12 @@ filebeat.modules:
       enabled: true
       var.paths:
         - /var/log/apache2/*access-searchtherift.log
-      pipeline: "apache-query-params"
+      var.pipeline: "apache-query-params"
     error:
       enabled: true
       var.paths:
         - /var/log/apache2/*error-searchtherift.log
-      pipeline: "apache-query-params"
+      var.pipeline: "apache-query-params"
 
 # Add standard metadata
 processors:
