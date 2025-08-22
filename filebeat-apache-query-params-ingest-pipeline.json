@@ -1,0 +1,73 @@
+//PUT _ingest/pipeline/apache-query-params
+{
+  "description": "Parse query params safely, decode URL, split lists",
+  "processors": [
+    {
+      "pipeline": {
+        "name": "filebeat-8.18.3-apache-access-pipeline"
+      }
+    },
+    {
+      "grok": {
+        "field": "url.original",
+        "patterns": [
+           "(?<request_path>[^?]+)(?:\\?(?<query_string>.*))?"
+        ],
+        "ignore_missing": true
+      }
+    },
+    {
+      "urldecode": {
+        "field": "query_string",
+        "ignore_failure": true
+      }
+    },
+    {
+      "kv": {
+        "field": "query_string",
+        "field_split": "&",
+        "value_split": "=",
+        "target_field": "query_params",
+        "ignore_missing": true,
+        "ignore_failure": true,
+        "trim_key": " ",
+        "trim_value": " "
+      }
+    },
+    {
+      "split": {
+        "field": "query_params.streamer",
+        "separator": ",",
+        "ignore_failure": true
+      }
+    },
+    {
+      "split": {
+        "field": "query_params.runes",
+        "separator": ",",
+        "ignore_failure": true
+      }
+    },
+    {
+      "split": {
+        "field": "query_params.team_champions",
+        "separator": ",",
+        "ignore_failure": true
+      }
+    },
+    {
+      "split": {
+        "field": "query_params.enemy_team_champions",
+        "separator": ",",
+        "ignore_failure": true
+      }
+    },
+    {
+      "split": {
+        "field": "query_params.champion_items",
+        "separator": ",",
+        "ignore_failure": true
+      }
+    }
+  ]
+}
