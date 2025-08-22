@@ -4,10 +4,12 @@ filebeat.modules:
       enabled: true
       var.paths:
         - /var/log/apache2/*access-searchtherift.log
+      var.elasticsearch.pipeline: "apache-query-params"   # Apply custom pipeline per module
     error:
       enabled: true
       var.paths:
         - /var/log/apache2/*error-searchtherift.log
+      var.elasticsearch.pipeline: "apache-query-params"
 
 # Add standard metadata
 processors:
@@ -26,7 +28,6 @@ output.elasticsearch:
   ssl:
     certificate_authorities: ["/certs/elastic_http_ca.crt"]
     verification_mode: full
-  pipeline: "apache-query-params"   # <-- Use the custom pipeline we created
 
 setup.template.enabled: true
 setup.template.overwrite: false
