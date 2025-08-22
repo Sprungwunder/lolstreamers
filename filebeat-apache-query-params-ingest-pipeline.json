@@ -71,3 +71,20 @@
     }
   ]
 }
+
+// 4) Persist final pipeline via an override template with higher priority
+// This ensures rollovers/new indices keep using the final pipeline
+
+//PUT _index_template/z-override-filebeat-8.18.3-final
+{
+  "index_patterns": ["filebeat-8.18.3"],
+  "priority": 1001,
+  "data_stream": {},
+  "template": {
+    "settings": {
+      "index": {
+        "final_pipeline": "apache-query-params"
+      }
+    }
+  }
+}

@@ -28,6 +28,7 @@ output.elasticsearch:
   ssl:
     certificate_authorities: ["/certs/elastic_http_ca.crt"]
     verification_mode: full
+  pipeline: "apache-query-params"
 
 setup.template.enabled: true
 setup.template.overwrite: false
