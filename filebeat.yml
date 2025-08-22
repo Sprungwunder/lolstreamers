@@ -3,11 +3,11 @@ filebeat.modules:
     access:
       enabled: true
       var.paths:
-        - /var/log/apache2/*access*.log
+        - /var/log/apache2/*access-searchtherift.log
     error:
       enabled: true
       var.paths:
-        - /var/log/apache2/*error*.log
+        - /var/log/apache2/*error-searchtherift.log
 
 # Reduce noise and add some standard fields
 processors:
