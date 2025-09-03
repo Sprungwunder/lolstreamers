@@ -246,7 +246,7 @@ class YtVideoDocumentSerializer(serializers.Serializer):
 
     def _save(self, validated_data):
         ytvideo = YtVideoDocument(**validated_data)
-        result = ytvideo.save(return_doc_meta=True)
+        result = ytvideo.save(return_doc_meta=True, refresh=True)
         meta_id = result.body.get("_id")
         ytvideo.meta.id = meta_id
         ytvideo.id = meta_id
