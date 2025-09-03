@@ -132,3 +132,21 @@ class ActivateYtVideo(ActivationApiView):
 
 class DeactivateYtVideo(ActivationApiView):
     is_active = False
+
+class CheckDuplicateYtVideo(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get(self, request, *args, **kwargs):
+        yt_id = self.kwargs.get("ytid")
+        if not yt_id:
+            return Response({"success": False, "message": "Missing URL parameter"}, status=400)
+        try:
+            search = YtVideoDocument.search()
+            search = search.filter("term", **{"ytid.keyword": yt_id})
+            response = search.execute()
+            if response.hits:
+                videos = [vid['_source'] for vid in response.to_dict()["hits"]["hits"]]
+                return Response({"hasDuplicates": True, "message": "Duplicate found", "videos": videos}, status=200)
+            return Response({"hasDuplicates": False, "message": "Duplicate not found"}, status=200)
+        except NotFoundError:
+            return Response({"hasDuplicates": False, "message": "Duplicate not found"}, status=200)
