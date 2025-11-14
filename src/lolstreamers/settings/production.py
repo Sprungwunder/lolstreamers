@@ -136,6 +136,7 @@ REQUIRED_ENV_VARS = [
     'ALLOWED_HOSTS',
     'CORS_ALLOWED_ORIGINS',
     'CSRF_TRUSTED_ORIGINS'
+    'RIOT_API_KEY'
 ]
 
 for var in REQUIRED_ENV_VARS:
@@ -148,3 +149,5 @@ sentry_sdk.init(
     # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
     send_default_pii=True,
 )
+
+RIOT_API_KEY = os.getenv('RIOT_API_KEY')

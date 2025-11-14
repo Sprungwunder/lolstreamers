@@ -121,7 +121,7 @@ class YtVideoDocument(Document):
 
     def set_active_and_serialize(self, is_active=True):
         logger.debug("Setting Youtube video %s to active: %s", self.meta.id, is_active)
-        self.update(is_active=is_active)
+        self.update(is_active=is_active, refresh=True)
         return self.serialize()
 
 
