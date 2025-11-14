@@ -22,10 +22,11 @@ def get_summoner_puuid(game_name, tag_line):
         headers=headers
     )
     puuid = account_response.json()['puuid']
+    logger.debug(f'Got puuid: {puuid}')
     return puuid
 
 
-def get_match_by_id(match_id: str, region: str = 'europe'):
+def get_match_by_id(match_id: str, region: str = 'europe') -> dict:
     """
     Get detailed match information by match ID
 
@@ -42,6 +43,7 @@ def get_match_by_id(match_id: str, region: str = 'europe'):
              'LA1_', 'LA2_', 'OC1_', 'TR1_', 'RU_')):
         match_id = f'EUW1_{match_id}'
 
+    logger.debug(f'Getting match data for {match_id}')
     response = requests.get(
         f'https://{region}.api.riotgames.com/lol/match/v5/matches/{match_id}',
         headers=headers
@@ -106,13 +108,13 @@ def get_matches_by_timestamp_range(puuid: str, start_time: int, end_time: int,
     return response.json()
 
 
-def get_participant_data(match_data: dict, puuid: str):
+def get_participant_data(match_data: dict, puuid: str) -> dict | None:
     for participant in match_data['info']['participants']:
         if participant['puuid'] == puuid:
             return participant
     return None
 
-def get_match_info_for_player(match_data: dict, puuid: str):
+def get_match_info_for_player(match_data: dict, puuid: str) -> dict | None:
     enriched_participant_data = get_participant_data(match_data, puuid)
     if enriched_participant_data is None:
         return None
@@ -124,7 +126,7 @@ def get_match_info_for_player(match_data: dict, puuid: str):
 
     return enriched_participant_data
 
-def get_rune_information(participant_data):
+def get_rune_information(participant_data) -> dict:
     """
         Extract runes information from participant data
 
@@ -250,7 +252,13 @@ def get_rune_name(rune_id: int) -> str:
     return f"Unknown Rune ({rune_id})"
 
 
-def extract_from_opgg(opgg_url: str):
+def extract_from_opgg(opgg_url: str) -> dict | None:
+    """
+    given the op.gg url extract the summoner information and timestamps to
+    find the corresponding match and extract the match data
+    :param opgg_url: op.gg game url
+    :returns: player data dict
+    """
     parsed_url = parse_opgg_match_url(opgg_url)
     if parsed_url is None:
         logger.debug(f"Invalid URL {opgg_url}")
@@ -262,6 +270,7 @@ def extract_from_opgg(opgg_url: str):
     if len(matches) == 0:
         logger.debug("No matches found")
         return None
+    logger.debug(f"Found {len(matches)} matches: {matches}")
     match_id = matches[0]
     match_data = get_match_by_id(match_id)
     player_data = get_match_info_for_player(match_data, puuid)
