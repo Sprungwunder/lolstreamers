@@ -45,6 +45,7 @@ class TestLeagueApi:
         # champion name, lane, items, runes
         assert player_info['championName'] == "Yorick"
         assert player_info['lane'] == "TOP"
+        assert player_info['individualPosition'] == "TOP"
         assert player_info['item0'] == "Doran's Ring"
         assert player_info['item1'] == "Liandry's Torment"
         assert player_info['item5'] is None
@@ -60,7 +61,10 @@ class TestLeagueApi:
 
         # champion name, lane, items, runes
         assert player_match_data['championName'] == "Yorick"
+        # if jungle, lane is None, if support lane is BOTTOM
         assert player_match_data['lane'] == "TOP"
+        # TOP, JUNGLE, MIDDLE + UTILITY
+        assert player_match_data['individualPosition'] == "TOP"
         assert player_match_data['item0'] == "Doran's Ring"
         assert player_match_data['item1'] == "Liandry's Torment"
         assert player_match_data['item5'] is None

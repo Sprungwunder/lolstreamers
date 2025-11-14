@@ -2,6 +2,8 @@ import logging
 from django.http import Http404, JsonResponse
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import ensure_csrf_cookie
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from elasticsearch import NotFoundError
 from rest_framework import permissions, mixins
 from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
@@ -9,9 +11,11 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 
+from .opgg_serializer import OPGGLeagueMatchRequestSerializer
 from .yt_es_documents import YtVideoDocument, YtVideoDocumentSerializer, ChampionKeywordSerializer, \
     EnemyChampionKeywordSerializer, RunesKeywordSerializer, ItemsKeywordSerializer, \
     TeamChampionKeywordSerializer, EnemyTeamChampionKeywordSerializer, StreamerKeywordSerializer
+from .league import extract_from_opgg
 
 
 logger = logging.getLogger(__name__)
@@ -150,3 +154,55 @@ class CheckDuplicateYtVideo(APIView):
             return Response({"hasDuplicates": False, "message": "Duplicate not found"}, status=200)
         except NotFoundError:
             return Response({"hasDuplicates": False, "message": "Duplicate not found"}, status=200)
+
+
+class LeagueMatchView(APIView):
+    """
+    POST body:
+    {
+        "opgg_url": "<op.gg game url>"
+    }
+
+    Response:
+      200: league match data for the player
+      400: invalid or missing URL
+      404: no match found for given URL
+    """
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    @swagger_auto_schema(
+        request_body=OPGGLeagueMatchRequestSerializer,
+        responses={
+            200: openapi.Response("Match data (player)",
+                                  schema=openapi.Schema(type=openapi.TYPE_OBJECT)),
+            400: "Missing or invalid opgg_url",
+            404: "No match data found",
+            500: "Error while fetching match data",
+        },
+        operation_summary="Get League match data from an op.gg URL",
+        operation_description="Takes an op.gg game URL and returns the enriched player match data.",
+    )
+    def post(self, request, *args, **kwargs):
+        opgg_url = request.data.get("opgg_url")
+        if not opgg_url:
+            return Response(
+                {"detail": "Missing 'opgg_url' in request body."},
+                status=400,
+            )
+
+        try:
+            player_match_data = extract_from_opgg(opgg_url)
+        except Exception as exc:
+            logger.exception("Error while extracting data from op.gg URL")
+            return Response(
+                {"detail": "Failed to fetch match data."},
+                status=500,
+            )
+
+        if player_match_data is None:
+            return Response(
+                {"detail": "No match data found for given URL."},
+                status=404,
+            )
+
+        return Response(player_match_data, status=200)

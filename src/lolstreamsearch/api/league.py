@@ -123,8 +123,23 @@ def get_match_info_for_player(match_data: dict, puuid: str) -> dict | None:
 
     rune_data = get_rune_information(enriched_participant_data)
     enriched_participant_data.update(rune_data)
+    minimal_participant_data = {
+        'riotIdGameName': enriched_participant_data['riotIdGameName'],
+        'riotIdTagline': enriched_participant_data['riotIdTagline'],
+        'championName': enriched_participant_data['championName'],
+        'lane': enriched_participant_data['lane'],
+        'individualPosition': enriched_participant_data['individualPosition'],
+        'item0': enriched_participant_data['item0'],
+        'item1': enriched_participant_data['item1'],
+        'item2': enriched_participant_data['item2'],
+        'item3': enriched_participant_data['item3'],
+        'item4': enriched_participant_data['item4'],
+        'item5': enriched_participant_data['item5'],
+        'primary_runes': enriched_participant_data['primary_runes'],
+        'secondary_runes': enriched_participant_data['secondary_runes'],
+    }
 
-    return enriched_participant_data
+    return minimal_participant_data
 
 def get_rune_information(participant_data) -> dict:
     """
