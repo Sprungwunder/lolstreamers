@@ -45,7 +45,7 @@ class TestLeagueApi:
         # champion name, lane, items, runes
         assert player_info['championName'] == "Yorick"
         assert player_info['lane'] == "TOP"
-        assert player_info['individualPosition'] == "TOP"
+        assert player_info['individualPosition'] == "Top"
         assert player_info['item0'] == "Doran's Ring"
         assert player_info['item1'] == "Liandry's Torment"
         assert player_info['item5'] is None
@@ -54,19 +54,19 @@ class TestLeagueApi:
         assert player_info['secondary_runes'] == ['Biscuit Delivery', 'Magical Footwear']
         assert player_info['participants'] == {
             'teamMembers': [
-                {'championName': 'LeeSin', 'lane': 'JUNGLE', 'individualPosition': 'JUNGLE', 'teamId': 100},
-                {'championName': 'Yasuo', 'lane': 'MIDDLE', 'individualPosition': 'MIDDLE', 'teamId': 100},
-                {'championName': 'Sivir', 'lane': 'BOTTOM', 'individualPosition': 'BOTTOM', 'teamId': 100},
-                {'championName': 'Ivern', 'lane': 'BOTTOM', 'individualPosition': 'UTILITY', 'teamId': 100}
+                {'championName': 'Lee Sin', 'lane': 'JUNGLE', 'individualPosition': 'Jungle', 'teamId': 100},
+                {'championName': 'Yasuo', 'lane': 'MIDDLE', 'individualPosition': 'Mid', 'teamId': 100},
+                {'championName': 'Sivir', 'lane': 'BOTTOM', 'individualPosition': 'ADC', 'teamId': 100},
+                {'championName': 'Ivern', 'lane': 'BOTTOM', 'individualPosition': 'Support', 'teamId': 100}
             ],
             'enemyTeamMembers': [
-                {'championName': 'KaiSa', 'lane': 'JUNGLE', 'individualPosition': 'JUNGLE', 'teamId': 200},
-                {'championName': 'KSante', 'lane': 'TOP', 'individualPosition': 'MIDDLE', 'teamId': 200},
-                {'championName': 'Nunu', 'lane': 'BOTTOM', 'individualPosition': 'BOTTOM', 'teamId': 200},
-                {'championName': 'Zaahen', 'lane': 'BOTTOM', 'individualPosition': 'UTILITY', 'teamId': 200},
+                {'championName': 'Kai\'Sa', 'lane': 'JUNGLE', 'individualPosition': 'Jungle', 'teamId': 200},
+                {'championName': 'K\'Sante', 'lane': 'TOP', 'individualPosition': 'Mid', 'teamId': 200},
+                {'championName': 'NunuWillump', 'lane': 'BOTTOM', 'individualPosition': 'ADC', 'teamId': 200},
+                {'championName': 'Zaahen', 'lane': 'BOTTOM', 'individualPosition': 'Support', 'teamId': 200},
             ],
             'opponent': [
-                {'championName': 'Teemo', 'lane': 'TOP', 'individualPosition': 'TOP', 'teamId': 200}
+                {'championName': 'Teemo', 'lane': 'TOP', 'individualPosition': 'Top', 'teamId': 200}
             ]
         }
 

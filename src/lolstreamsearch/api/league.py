@@ -118,6 +118,62 @@ def get_participant_data(match_data: dict, puuid: str) -> dict | None:
     return None
 
 
+LANE_POSITION_MAP = {
+    "TOP": "Top",
+    "JUNGLE": "Jungle",
+    "MIDDLE": "Mid",
+    "BOTTOM": "ADC",
+    "UTILITY": "Support",
+}
+
+
+def map_individual_position(position: str) -> str|None:
+    """
+    Map Riot's individualPosition values (TOP, JUNGLE, MIDDLE, BOTTOM, UTILITY)
+    to our human-readable lanes (Top, Jungle, Mid, ADC, Support).
+    Any unknown value is returned unchanged.
+    """
+    if position is None:
+        return position
+    return LANE_POSITION_MAP.get(position, position)
+
+
+
+def map_individual_champion_names(champion_name: str) -> str | None:
+    """
+    Map Riot's champion names (KSante, KaiSa, LeeSin,etc)
+    to our human-readable names
+    Any unknown value is returned unchanged.
+    """
+    if champion_name is None:
+        return champion_name
+    return CHAMPION_NAME_MAP.get(champion_name, champion_name)
+
+
+CHAMPION_NAME_MAP = {
+    'AurelionSol': 'Aurelion Sol',
+    'BelVeth': 'Bel\'Veth',
+    'ChoGath': 'Cho\'Gath',
+    'DrMundo': 'Dr. Mundo',
+    'FiddleSticks': 'Fiddlesticks',
+    'JarvanIV': 'Jarvan IV',
+    'KSante': 'K\'Sante',
+    'KaiSa': 'Kai\'Sa',
+    'KhaZix': 'Kha\'Zix',
+    'KogMaw': 'Kog\'Maw',
+    'LeeSin': 'Lee Sin',
+    'MasterYi': 'Master Yi',
+    'MissFortune': 'Miss Fortune',
+    'Nunu': 'Nunu Willump',
+    'RekSai': 'Rek\'Sai',
+    'RenataGlasc': 'Renata Glasc',
+    'TahmKench': 'Tahm Kench',
+    'TwistedFate': 'Twisted Fate',
+    'Velkoz': 'Vel\'Koz',
+    'XinZhao': 'Xin Zhao',
+}
+
+
 def get_other_participants(match_data: dict, puuid: str, team_id: int,
                            individual_position: str) -> dict:
     other_participants = {
@@ -133,9 +189,9 @@ def get_other_participants(match_data: dict, puuid: str, team_id: int,
             if participant['individualPosition'] == individual_position:
                 append_to = 'opponent'
             other_participants[append_to].append({
-                'championName': participant['championName'],
+                'championName': map_individual_champion_names(participant['championName']),
                 'lane': participant['lane'],
-                'individualPosition': participant['individualPosition'],
+                'individualPosition': map_individual_position(participant['individualPosition']),
                 'teamId': participant['teamId']
             })
 
@@ -163,9 +219,9 @@ def get_match_info_for_player(match_data: dict, puuid: str) -> dict | None:
     minimal_participant_data = {
         'riotIdGameName': enriched_participant_data['riotIdGameName'],
         'riotIdTagline': enriched_participant_data['riotIdTagline'],
-        'championName': enriched_participant_data['championName'],
+        'championName': map_individual_champion_names(enriched_participant_data['championName']),
         'lane': enriched_participant_data['lane'],
-        'individualPosition': enriched_participant_data['individualPosition'],
+        'individualPosition': map_individual_position(enriched_participant_data['individualPosition']),
         'item0': enriched_participant_data['item0'],
         'item1': enriched_participant_data['item1'],
         'item2': enriched_participant_data['item2'],

@@ -26,12 +26,9 @@ POST:
 
 
 """
-import re
 import logging
 
 import urllib3
-from django.core.exceptions import ValidationError
-from django.core.validators import URLValidator
 from elasticsearch_dsl import Text, Date, Keyword, Document, Boolean
 from rest_framework import serializers
 
