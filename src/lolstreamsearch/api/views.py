@@ -11,12 +11,13 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 
+from google_api import extract_opgg_url_from_yt
 from .opgg_serializer import OPGGLeagueMatchRequestSerializer
 from .yt_es_documents import YtVideoDocument, YtVideoDocumentSerializer, ChampionKeywordSerializer, \
     EnemyChampionKeywordSerializer, RunesKeywordSerializer, ItemsKeywordSerializer, \
     TeamChampionKeywordSerializer, EnemyTeamChampionKeywordSerializer, StreamerKeywordSerializer
 from .league import extract_from_opgg
-
+from .yturl_serializer import YtURLSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -156,7 +157,7 @@ class CheckDuplicateYtVideo(APIView):
             return Response({"hasDuplicates": False, "message": "Duplicate not found"}, status=200)
 
 
-class LeagueMatchView(APIView):
+class LeagueMatchAPIView(APIView):
     """
     POST body:
     {
@@ -194,6 +195,58 @@ class LeagueMatchView(APIView):
             player_match_data = extract_from_opgg(opgg_url)
         except Exception as exc:
             logger.exception("Error while extracting data from op.gg URL")
+            return Response(
+                {"detail": "Failed to fetch match data."},
+                status=500,
+            )
+
+        if player_match_data is None:
+            return Response(
+                {"detail": "No match data found for given URL."},
+                status=404,
+            )
+
+        return Response(player_match_data, status=200)
+
+class LeagueMatchFromYTVideoAPIView(APIView):
+    """
+        POST body:
+        {
+            "yt_url": "<youtube video url>"
+        }
+
+        Response:
+          200: league match data for the player
+          400: invalid or missing URL
+          404: no match found for given URL
+        """
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    @swagger_auto_schema(
+        request_body=YtURLSerializer,
+        responses={
+            200: openapi.Response("Match data (player)",
+                                  schema=openapi.Schema(type=openapi.TYPE_OBJECT)),
+            400: "Missing or invalid youtube url",
+            404: "No match data found",
+            500: "Error while fetching match data",
+        },
+        operation_summary="Get League match data from an youtube URL",
+        operation_description="Takes an youtube URL and returns the enriched player match data.",
+    )
+    def post(self, request, *args, **kwargs):
+        yt_url = request.data.get("yt_url")
+        if not yt_url:
+            return Response(
+                {"detail": "Missing 'yt_url' in request body."},
+                status=400,
+            )
+
+        try:
+            op_gg_url = extract_opgg_url_from_yt(yt_url)
+            player_match_data = extract_from_opgg(op_gg_url)
+        except Exception as exc:
+            logger.exception("Error while extracting data from youtube URL")
             return Response(
                 {"detail": "Failed to fetch match data."},
                 status=500,

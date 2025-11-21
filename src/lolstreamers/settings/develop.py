@@ -96,4 +96,4 @@ LOGGING = {
     }
 }
 
-RIOT_API_KEY = 'RGAPI-e7e8f960-325f-4d34-bd5d-5ac6822be93a'
+RIOT_API_KEY = os.getenv('RIOT_API_KEY')

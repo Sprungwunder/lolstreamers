@@ -1,12 +1,16 @@
 import logging
 import os
+import re
 import time
 import socket
 
+from django.core.validators import URLValidator
 from googleapiclient.discovery import build
 from googleapiclient.discovery_cache.base import Cache
 from googleapiclient.errors import HttpError
 import ssl
+
+from rest_framework.exceptions import ValidationError
 
 api_key = os.getenv("YT_API_KEY")
 
@@ -109,6 +113,81 @@ class YoutubeVideoInformation:
         self.published_at = self._data['snippet']['publishedAt']
         self.channel = self._data['snippet']['channelTitle']
 
+def validate_youtube_url(url):
+    logger.debug("Validating YouTube URL: %s", url)
+    if not url or not isinstance(url, str):
+        raise ValueError("Invalid URL type")
+
+    # Trim whitespace
+    url = url.strip()
+
+    # Check maximum length (reasonable limit for YouTube URLs)
+    if len(url) > 300:
+        raise ValueError("URL is too long")
+
+    # Validate URL format using Django's URLValidator
+    url_validator = URLValidator(schemes=['http', 'https'])
+    try:
+        url_validator(url)
+    except ValidationError:
+        raise ValueError("Invalid URL format")
+
+    # Case insensitive regex for YouTube-specific validation
+    youtube_regex = r'^(https?://)?(www\.)?(youtube\.com/watch\?v=|youtu\.be/)[a-zA-Z0-9_-]{11}([?&][^&\s]*)*$'
+
+    if not re.match(youtube_regex, url, re.IGNORECASE):
+        raise ValueError("Invalid YouTube URL format")
+
+    # Ensure HTTPS in production
+    if not url.startswith('https://'):
+        url = url.replace('http://', 'https://')
+
+    return url
+
+
+def get_yt_id_and_timestamp(url, validate=False):
+    """
+    handles youtube video URL and returns the YouTube ID and timestamp
+    two possible formats: https://youtu.be/Kryc40r9wOg?feature=shared&t=1737
+    or:                   https://www.youtube.com/watch?v=Kryc40r9wOg&t=1737s
+
+    :return:
+    """
+    logger.debug("Getting YouTube ID and timestamp from url: %s", url)
+    timestamp = 0
+    video_id = None
+
+    try:
+        if validate:
+            url = validate_youtube_url(url)
+
+        if "youtu.be" in url:
+            # Handle short format
+            path = url.split("youtu.be/")[1]
+            video_id = path
+            if "?" in path:
+                video_id = path.split("?")[0]
+                query_params = path.split("?")[1]
+                for param in query_params.split("&"):
+                    if param.startswith("t="):
+                        timestamp = param.split("=")[1].rstrip("s")
+        else:
+            # Handle long format
+            query_params = url.split("?", 1)[1]
+            for param in query_params.split("&"):
+                if param.startswith("v="):
+                    video_id = param.split("=")[1]
+                elif param.startswith("t="):
+                    timestamp = param.split("=")[1].rstrip("s")
+
+        if not video_id or len(video_id) != 11:
+            raise ValueError("Invalid YouTube video ID")
+
+        return video_id, timestamp
+    except (IndexError, KeyError):
+        raise ValueError("Invalid YouTube URL structure")
+    except ValueError as e:
+        raise ValueError(str(e))
 
 def get_yt_video_information(video_id: str) -> YoutubeVideoInformation:
     retry_count = 0
@@ -154,6 +233,22 @@ def get_yt_video_information(video_id: str) -> YoutubeVideoInformation:
             }
         }]
     })
+
+def extract_opgg_url_from_yt(yt_url: str) -> str:
+    yt_id = get_yt_id_and_timestamp(yt_url, validate=True)[0]
+    yt_video_information = get_yt_video_information(yt_id)
+
+    opgg_pattern = r'https://op\.gg/lol/[^\s]+'
+
+    try:
+        match = re.search(opgg_pattern, yt_video_information.description)
+        if match:
+            return match.group(0)
+        logger.debug("No op.gg URL found in video description")
+        return ""
+    except Exception as e:
+        logger.error(f"Error extracting op.gg URL: {str(e)}")
+        return ""
 
 
 def main():

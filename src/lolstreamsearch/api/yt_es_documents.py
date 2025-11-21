@@ -35,7 +35,7 @@ from django.core.validators import URLValidator
 from elasticsearch_dsl import Text, Date, Keyword, Document, Boolean
 from rest_framework import serializers
 
-from google_api import get_yt_video_information
+from google_api import get_yt_video_information, get_yt_id_and_timestamp
 from lolstreamers import settings
 
 if settings.DEBUG:
@@ -125,38 +125,6 @@ class YtVideoDocument(Document):
         return self.serialize()
 
 
-def validate_youtube_url(url):
-    logger.debug("Validating YouTube URL: %s", url)
-    if not url or not isinstance(url, str):
-        raise ValueError("Invalid URL type")
-
-    # Trim whitespace
-    url = url.strip()
-
-    # Check maximum length (reasonable limit for YouTube URLs)
-    if len(url) > 300:
-        raise ValueError("URL is too long")
-
-    # Validate URL format using Django's URLValidator
-    url_validator = URLValidator(schemes=['http', 'https'])
-    try:
-        url_validator(url)
-    except ValidationError:
-        raise ValueError("Invalid URL format")
-
-    # Case insensitive regex for YouTube-specific validation
-    youtube_regex = r'^(https?://)?(www\.)?(youtube\.com/watch\?v=|youtu\.be/)[a-zA-Z0-9_-]{11}([?&][^&\s]*)*$'
-
-    if not re.match(youtube_regex, url, re.IGNORECASE):
-        raise ValueError("Invalid YouTube URL format")
-
-    # Ensure HTTPS in production
-    if not url.startswith('https://'):
-        url = url.replace('http://', 'https://')
-
-    return url
-
-
 class YtVideoDocumentSerializer(serializers.Serializer):
     id = serializers.CharField(required=False)
     ytid = serializers.CharField(required=False)
@@ -178,64 +146,20 @@ class YtVideoDocumentSerializer(serializers.Serializer):
     views = serializers.IntegerField(required=False)
     likes = serializers.IntegerField(required=False)
 
-    def get_yt_id_and_timestamp(self, instance, validate=False):
-        """
-        handles youtube video URL and returns the YouTube ID and timestamp
-        two possible formats: https://youtu.be/Kryc40r9wOg?feature=shared&t=1737
-        or:                   https://www.youtube.com/watch?v=Kryc40r9wOg&t=1737s
-
-        :return:
-        """
-        logger.debug("Getting YouTube ID and timestamp from instance: %s", instance)
-        timestamp = 0
-        video_id = None
-
-        try:
-            url = instance["video_url"]
-            if validate:
-                url = validate_youtube_url(url)
-
-            if "youtu.be" in url:
-                # Handle short format
-                path = url.split("youtu.be/")[1]
-                video_id = path
-                if "?" in path:
-                    video_id = path.split("?")[0]
-                    query_params = path.split("?")[1]
-                    for param in query_params.split("&"):
-                        if param.startswith("t="):
-                            timestamp = param.split("=")[1].rstrip("s")
-            else:
-                # Handle long format
-                query_params = url.split("?", 1)[1]
-                for param in query_params.split("&"):
-                    if param.startswith("v="):
-                        video_id = param.split("=")[1]
-                    elif param.startswith("t="):
-                        timestamp = param.split("=")[1].rstrip("s")
-
-            if not video_id or len(video_id) != 11:
-                raise ValueError("Invalid YouTube video ID")
-
-            return video_id, timestamp
-        except (IndexError, KeyError):
-            raise ValueError("Invalid YouTube URL structure")
-        except ValueError as e:
-            raise ValueError(str(e))
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         if isinstance(instance, YtVideoDocument):
             representation['id'] = instance.meta.id
 
-        representation['ytid'], representation['timestamp'] = self.get_yt_id_and_timestamp(instance)
+        representation['ytid'], representation['timestamp'] = get_yt_id_and_timestamp(instance['video_url'])
         yt_info = get_yt_video_information(representation['ytid'])
         representation['views'] = yt_info.views
         representation['likes'] = yt_info.likes
         return representation
 
     def _set_validated_data(self, validated_data):
-        ytid, timestamp = self.get_yt_id_and_timestamp(validated_data, validate=True)
+        ytid, timestamp = get_yt_id_and_timestamp(validated_data['video_url'], validate=True)
         yt_video_info = get_yt_video_information(ytid)
         validated_data['ytid'] = ytid
         validated_data['timestamp'] = timestamp

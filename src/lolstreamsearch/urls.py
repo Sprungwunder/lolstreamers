@@ -46,6 +46,6 @@ urlpatterns = router.urls + [
     path('ytvideos/activate/<str:pk>/', views.ActivateYtVideo.as_view(), name='activate-ytvideo'),
     path('ytvideos/deactivate/<str:pk>/', views.DeactivateYtVideo.as_view(), name='deactivate-ytvideo'),
     path('ytvideos/check-duplicate/<str:ytid>/', views.CheckDuplicateYtVideo.as_view(), name='check-duplicate-ytvideo'),
-    path('ytvideos/league-match/opgg/', views.LeagueMatchView.as_view(), name='league-match')
-
+    path('ytvideos/league-match/opgg/', views.LeagueMatchAPIView.as_view(), name='league-opgg-match'),
+    path('ytvideos/league-match/yt/', views.LeagueMatchFromYTVideoAPIView.as_view(), name='league-yt-match')
 ]
