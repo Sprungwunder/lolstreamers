@@ -96,4 +96,4 @@ LOGGING = {
     }
 }
 
-RIOT_API_KEY = 'RGAPI-aec50855-7d77-42fa-bbf2-a741fd863174'
+RIOT_API_KEY = 'RGAPI-e7e8f960-325f-4d34-bd5d-5ac6822be93a'

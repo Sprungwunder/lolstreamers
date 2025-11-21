@@ -27,8 +27,8 @@ class TestLeagueApi:
 
     def test_get_match_by_id(self):
         match_id = "EUW1_7594636490"
-        match_data = get_match_by_id(match_id)
-        assert 'info' in match_data
+        current_match_data = get_match_by_id(match_id)
+        assert 'info' in current_match_data
 
     def test_get_rune_information(self):
         runes = get_rune_information(match_data['info']['participants'][0])
@@ -52,6 +52,23 @@ class TestLeagueApi:
         assert player_info['primary_runes'] == ['Arcane Comet', 'Manaflow Band', 'Transcendence',
                                                 'Gathering Storm']
         assert player_info['secondary_runes'] == ['Biscuit Delivery', 'Magical Footwear']
+        assert player_info['participants'] == {
+            'teamMembers': [
+                {'championName': 'LeeSin', 'lane': 'JUNGLE', 'individualPosition': 'JUNGLE', 'teamId': 100},
+                {'championName': 'Yasuo', 'lane': 'MIDDLE', 'individualPosition': 'MIDDLE', 'teamId': 100},
+                {'championName': 'Sivir', 'lane': 'BOTTOM', 'individualPosition': 'BOTTOM', 'teamId': 100},
+                {'championName': 'Ivern', 'lane': 'BOTTOM', 'individualPosition': 'UTILITY', 'teamId': 100}
+            ],
+            'enemyTeamMembers': [
+                {'championName': 'KaiSa', 'lane': 'JUNGLE', 'individualPosition': 'JUNGLE', 'teamId': 200},
+                {'championName': 'KSante', 'lane': 'TOP', 'individualPosition': 'MIDDLE', 'teamId': 200},
+                {'championName': 'Nunu', 'lane': 'BOTTOM', 'individualPosition': 'BOTTOM', 'teamId': 200},
+                {'championName': 'Zaahen', 'lane': 'BOTTOM', 'individualPosition': 'UTILITY', 'teamId': 200},
+            ],
+            'opponent': [
+                {'championName': 'Teemo', 'lane': 'TOP', 'individualPosition': 'TOP', 'teamId': 200}
+            ]
+        }
 
     def test_extract_from_opgg(self):
         player_match_data = extract_from_opgg(self.opgg_url)

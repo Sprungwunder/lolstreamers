@@ -15,6 +15,7 @@ headers = {
     'X-Riot-Token': settings.RIOT_API_KEY
 }
 
+
 def get_summoner_puuid(game_name, tag_line):
     logger.debug(f'Getting puuid for {game_name} {tag_line}')
     account_response = requests.get(
@@ -51,6 +52,7 @@ def get_match_by_id(match_id: str, region: str = 'europe') -> dict:
     response.raise_for_status()
     return response.json()
 
+
 def parse_opgg_match_url(opgg_url: str) -> dict | None:
     """
     Extract platform region, Riot ID (gameName, tagLine) and timestamp from an op.gg URL.
@@ -78,6 +80,7 @@ def parse_opgg_match_url(opgg_url: str) -> dict | None:
         'tag_line': tag_line,
         'timestamp': ts_ms
     }
+
 
 def get_matches_by_timestamp_range(puuid: str, start_time: int, end_time: int,
                                    region: str = 'europe', count: int = 100) -> list:
@@ -114,15 +117,49 @@ def get_participant_data(match_data: dict, puuid: str) -> dict | None:
             return participant
     return None
 
+
+def get_other_participants(match_data: dict, puuid: str, team_id: int,
+                           individual_position: str) -> dict:
+    other_participants = {
+        'teamMembers': [],
+        'enemyTeamMembers': [],
+        'opponent': []
+    }
+    for participant in match_data['info']['participants']:
+        if participant['puuid'] != puuid:
+            append_to = 'enemyTeamMembers'
+            if participant['teamId'] == team_id:
+                append_to = 'teamMembers'
+            if participant['individualPosition'] == individual_position:
+                append_to = 'opponent'
+            other_participants[append_to].append({
+                'championName': participant['championName'],
+                'lane': participant['lane'],
+                'individualPosition': participant['individualPosition'],
+                'teamId': participant['teamId']
+            })
+
+    logger.debug(f"Other participants: {other_participants}")
+    return other_participants
+
+
 def get_match_info_for_player(match_data: dict, puuid: str) -> dict | None:
     enriched_participant_data = get_participant_data(match_data, puuid)
     if enriched_participant_data is None:
         return None
+
+    # add item names
     for item in ["item0", "item1", "item2", "item3", "item4", "item5"]:
         enriched_participant_data[item] = get_item_name(enriched_participant_data[item])
 
     rune_data = get_rune_information(enriched_participant_data)
     enriched_participant_data.update(rune_data)
+
+    # get other participant roles and champion names
+    other_participants = get_other_participants(
+        match_data, puuid, enriched_participant_data['teamId'], enriched_participant_data['individualPosition']
+    )
+
     minimal_participant_data = {
         'riotIdGameName': enriched_participant_data['riotIdGameName'],
         'riotIdTagline': enriched_participant_data['riotIdTagline'],
@@ -137,9 +174,11 @@ def get_match_info_for_player(match_data: dict, puuid: str) -> dict | None:
         'item5': enriched_participant_data['item5'],
         'primary_runes': enriched_participant_data['primary_runes'],
         'secondary_runes': enriched_participant_data['secondary_runes'],
+        'participants': other_participants,
     }
-
+    logger.debug(f"Minimal participant data: {minimal_participant_data}")
     return minimal_participant_data
+
 
 def get_rune_information(participant_data) -> dict:
     """
@@ -166,7 +205,8 @@ def get_rune_information(participant_data) -> dict:
 
     return {
         'primary_style': primary_style.get('style'),  # Tree ID (e.g., 8000 for Precision)
-        'primary_runes': [get_rune_name(rune_id) for rune_id in primary_runes],  # [keystone, rune1, rune2, rune3]
+        'primary_runes': [get_rune_name(rune_id) for rune_id in primary_runes],
+        # [keystone, rune1, rune2, rune3]
         'secondary_style': secondary_style.get('style'),  # Tree ID
         'secondary_runes': [get_rune_name(rune_id) for rune_id in secondary_runes],
         'stat_perks': {
@@ -279,9 +319,9 @@ def extract_from_opgg(opgg_url: str) -> dict | None:
         logger.debug(f"Invalid URL {opgg_url}")
         return None
     puuid = get_summoner_puuid(parsed_url['game_name'], parsed_url['tag_line'])
-    time_start = int(parsed_url['timestamp']/1000)
+    time_start = int(parsed_url['timestamp'] / 1000)
     # 5 minute time window
-    matches = get_matches_by_timestamp_range(puuid, time_start, time_start+300)
+    matches = get_matches_by_timestamp_range(puuid, time_start, time_start + 300)
     if len(matches) == 0:
         logger.debug("No matches found")
         return None
