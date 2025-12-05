@@ -105,7 +105,7 @@ class YtVideoDocument(Document):
                 for value in values_list:
                     should_clauses.append({"term": {"streamer": value}})
                 videos = videos.query("bool", should=should_clauses)
-            elif key in ["lane", "is_active"]:
+            elif key in ["lane", "is_active", "lol_version"]:
                 videos = videos.filter("term", **{key: values})
             else:
                 for value in values_list:
