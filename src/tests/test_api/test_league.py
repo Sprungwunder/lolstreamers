@@ -62,7 +62,7 @@ class TestLeagueApi:
             'enemyTeamMembers': [
                 {'championName': 'Kai\'Sa', 'lane': 'JUNGLE', 'individualPosition': 'Jungle', 'teamId': 200},
                 {'championName': 'K\'Sante', 'lane': 'TOP', 'individualPosition': 'Mid', 'teamId': 200},
-                {'championName': 'NunuWillump', 'lane': 'BOTTOM', 'individualPosition': 'ADC', 'teamId': 200},
+                {'championName': 'Nunu Willump', 'lane': 'BOTTOM', 'individualPosition': 'ADC', 'teamId': 200},
                 {'championName': 'Zaahen', 'lane': 'BOTTOM', 'individualPosition': 'Support', 'teamId': 200},
             ],
             'opponent': [
@@ -81,7 +81,7 @@ class TestLeagueApi:
         # if jungle, lane is None, if support lane is BOTTOM
         assert player_match_data['lane'] == "TOP"
         # TOP, JUNGLE, MIDDLE + UTILITY
-        assert player_match_data['individualPosition'] == "TOP"
+        assert player_match_data['individualPosition'] == "Top"
         assert player_match_data['item0'] == "Doran's Ring"
         assert player_match_data['item1'] == "Liandry's Torment"
         assert player_match_data['item5'] is None
