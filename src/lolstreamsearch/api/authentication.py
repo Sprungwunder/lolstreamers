@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.conf import settings
 
@@ -10,6 +11,7 @@ def set_cookie(response):
         response.data['access'],
         max_age=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'].total_seconds(),
         path=settings.SIMPLE_JWT['AUTH_COOKIE_PATH'],
+        domain=settings.SIMPLE_JWT['AUTH_COOKIE_DOMAIN'],
         secure=settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
         httponly=settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
         samesite=settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
@@ -22,6 +24,7 @@ def refresh(response):
         response.data['refresh'],
         max_age=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'].total_seconds(),
         path=settings.SIMPLE_JWT['AUTH_COOKIE_PATH'],
+        domain=settings.SIMPLE_JWT['AUTH_COOKIE_DOMAIN'],
         secure=settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
         httponly=settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
         samesite=settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
@@ -42,18 +45,19 @@ class CookieTokenObtainPairView(TokenObtainPairView):
 
 class CookieTokenRefreshView(TokenRefreshView):
     def post(self, request, *args, **kwargs):
-        # Get refresh token from the cookie instead of request body
-        refresh_token = request.COOKIES.get('refresh_token')
+        refresh_cookie_name = settings.SIMPLE_JWT['AUTH_COOKIE_REFRESH']
+        refresh_token = request.COOKIES.get(refresh_cookie_name)
 
         if not refresh_token:
-            return Response({"detail": "No valid refresh token found."},
-                            status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"detail": "No valid refresh token found."},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
 
-        # Add the token to the request data
-        request.data['refresh'] = refresh_token
+        serializer = TokenRefreshSerializer(data={'refresh': refresh_token})
+        serializer.is_valid(raise_exception=True)
 
-        # Call the parent implementation
-        return super().post(request, *args, **kwargs)
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
     def finalize_response(self, request, response, *args, **kwargs):
         if response.data.get('access'):
@@ -68,6 +72,16 @@ class CookieTokenRefreshView(TokenRefreshView):
 class LogoutView(APIView):
     def post(self, request):
         response = Response(status=status.HTTP_200_OK)
-        response.delete_cookie(settings.SIMPLE_JWT['AUTH_COOKIE'])
-        response.delete_cookie(settings.SIMPLE_JWT['AUTH_COOKIE_REFRESH'])
+        response.delete_cookie(
+            settings.SIMPLE_JWT['AUTH_COOKIE'],
+            path=settings.SIMPLE_JWT['AUTH_COOKIE_PATH'],
+            domain=settings.SIMPLE_JWT['AUTH_COOKIE_DOMAIN'],
+            samesite=settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE'],
+        )
+        response.delete_cookie(
+            settings.SIMPLE_JWT['AUTH_COOKIE_REFRESH'],
+            path=settings.SIMPLE_JWT['AUTH_COOKIE_PATH'],
+            domain=settings.SIMPLE_JWT['AUTH_COOKIE_DOMAIN'],
+            samesite=settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE'],
+        )
         return response
