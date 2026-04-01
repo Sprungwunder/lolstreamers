@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 
-from businesslogic.data_extraction import extract_from_yt_information
+from lolstreamsearch.businesslogic.data_extraction import extract_from_yt_information
 from google_api import extract_opgg_url_from_yt
 from .opgg_serializer import OPGGLeagueMatchRequestSerializer
 from .yt_es_documents import YtVideoDocument, YtVideoDocumentSerializer, ChampionKeywordSerializer, \
