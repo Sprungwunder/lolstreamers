@@ -4,6 +4,7 @@ import re
 import time
 import socket
 
+from django.core.cache import cache
 from django.core.validators import URLValidator
 from googleapiclient.discovery import build
 from googleapiclient.discovery_cache.base import Cache
@@ -18,6 +19,7 @@ YOUTUBE = None
 MAX_RETRIES = 3
 TIMEOUT = 5  # seconds
 BACKOFF_FACTOR = 2
+CACHE_TIMEOUT = 3600  # Cache video information for 1 hour
 
 logger = logging.getLogger(__name__)
 
@@ -190,6 +192,14 @@ def get_yt_id_and_timestamp(url, validate=False):
         raise ValueError(str(e))
 
 def get_yt_video_information(video_id: str) -> YoutubeVideoInformation:
+    # Check cache first
+    cache_key = f"yt_video_info_{video_id}"
+    cached_data = cache.get(cache_key)
+
+    if cached_data:
+        logger.debug(f"Using cached video information for video ID: {video_id}")
+        return YoutubeVideoInformation(cached_data)
+
     retry_count = 0
     last_exception = None
     logger.debug(f"Fetching video information for video ID: {video_id}")
@@ -204,6 +214,10 @@ def get_yt_video_information(video_id: str) -> YoutubeVideoInformation:
             )
             response = request.execute()
             logger.debug(f"Video information response: {response}")
+
+            # Cache the successful response
+            cache.set(cache_key, response, CACHE_TIMEOUT)
+
             return YoutubeVideoInformation(response)
         except (ssl.SSLError, TimeoutError, HttpError) as e:
             logger.error(f"Error fetching video information: {str(e)}")
@@ -251,8 +265,10 @@ def extract_opgg_url_from_yt(yt_url: str) -> str:
         return ""
 
 
+
+
 def main():
-    yt_video_information = get_yt_video_information("l_6I6LChDNk")
+    yt_video_information = get_yt_video_information("9m5KTgudxUI")
     print(yt_video_information.title)
 
 

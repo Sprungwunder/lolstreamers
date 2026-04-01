@@ -11,6 +11,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 
+from businesslogic.data_extraction import extract_from_yt_information
 from google_api import extract_opgg_url_from_yt
 from .opgg_serializer import OPGGLeagueMatchRequestSerializer
 from .yt_es_documents import YtVideoDocument, YtVideoDocumentSerializer, ChampionKeywordSerializer, \
@@ -249,6 +250,16 @@ class LeagueMatchFromYTVideoAPIView(APIView):
             logger.exception("Error while extracting data from youtube URL")
             return Response(
                 {"detail": "Failed to fetch match data."},
+                status=500,
+            )
+
+        try:
+            if player_match_data is None:
+                player_match_data = extract_from_yt_information(yt_url)
+        except Exception as exc:
+            logger.exception("Error while processing match data")
+            return Response(
+                {"detail": "Failed to process match data."},
                 status=500,
             )
 
