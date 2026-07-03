@@ -127,7 +127,7 @@ class YtVideoDocumentSerializer(serializers.Serializer):
     ytid = serializers.CharField(required=False)
     timestamp = serializers.CharField(required=False)
     title = serializers.CharField(required=False)
-    description = serializers.CharField(required=False)
+    description = serializers.CharField(required=False, allow_blank=True)
     video_url = serializers.CharField()
     published_at = serializers.DateTimeField(required=False)
     champion = serializers.CharField()
